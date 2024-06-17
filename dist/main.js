@@ -1,0 +1,1 @@
+(()=>{"use strict";const t=new class{constructor(t,e){this.title=t,this.description=e}get theTitle(){return`The tile for this Todo is ${this.title}`}greet(){console.log("Hello!")}}("Title","Desc");console.log(t.theTitle),new class{constructor(t){this.title=t}myFunc(){console.log("Just testing importing of project.js")}}("Title.").myFunc()})();
