@@ -1,9 +1,19 @@
 export default class Project {
-    constructor(title) {
-        this.title = title;
+    
+    constructor(name="default") {
+        this.name = name;
+        this.todoArray = [];
+        console.log(`New project object created with name ${name}`);
     }
 
-    myFunc() {
-        console.log("Just testing importing of project.js");
+    get projectName(){
+        return this.name;
     }
+
+    func1 () {
+        console.log("Func1");
+        // console.log(bigCall);
+        console.log(this.p1); // undefined
+    }
+
 }
