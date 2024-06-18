@@ -4,9 +4,9 @@ export default class Todo {
     constructor (title,description){
         this.title =  title;
         this.description = description;
-        this.dueDate = dueDate;
-        this.priority;
-        this.details;
+        // this.dueDate = dueDate;
+        // this.priority;
+        // this.details;
     }
 
     get theTitle(){
