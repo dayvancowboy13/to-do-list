@@ -70,5 +70,19 @@ export default class Project {
         }
         return false;
     }
+    editTodo (oldTitle, newTitle, desc, dueDate, priority){
+        console.log(`Editing Todo previously called ${oldTitle} from project ${this.name}`);
+
+        for (let todo of this.todoArray){
+            if(todo.title === oldTitle){
+                todo.title = newTitle;
+                todo.description = desc;
+                todo.dueDate = dueDate;
+                todo.priority = priority;
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

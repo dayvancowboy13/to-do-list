@@ -97,11 +97,27 @@ class PuppetMaster {
         return undefined;
     }
 
-    static getTodoDetails(){
+    static getTodoDetails(projectName, todoTitle){
         // DOM class will use this to display more details of a todo
+        console.log(`Getting details for ${todoTitle} from ${projectName}`)
+        if(projectName === "Inbox"){
+            return this.inbox.findTodo(todoTitle);
+        } else {
+            // find projectName in projectArray
+            let targetProject;
+            for (let project of this.projectArray){
+                if (project.projectName === projectName){
+                    targetProject = project;
+                    return targetProject.findTodo(todoTitle);
+                }
+            }
+            if (targetProject === undefined){
+                console.log("something went wrong in getProjectTodos");
+                return undefined;
+            }
+        }
     }
 
-    // the DOM class will have a function to style the list returned
     static getProjectTodos(projectName){
         console.log("calling getProjectTodos")
         if(projectName === "Inbox"){
@@ -163,18 +179,36 @@ class PuppetMaster {
         }
         return thisWeekArray;
     }
+
+    static tempEditTodo(todoTitle, projectName, edits){
+        if(projectName === "Inbox"){
+            this.inbox.editTodo(todoTitle, edits.newTitle, edits.desc, 
+                edits.dueDate, edits.priority);
+        }
+        else {
+            this.getProjectFromArray(projectName).editTodo(todoTitle, 
+                edits.newTitle, edits.desc, edits.dueDate, edits.priority);
+        }
+    }
 }
 
 // PuppetMaster.getTodaysTodos();
 PuppetMaster.addToProject("Inbox", "t1", "desc", new Date(), "low")
-PuppetMaster.addToProject("Inbox", "t2", "desc", new Date(2024,5,22), "high")
-PuppetMaster.addToProject("Inbox", "t3", "desc", new Date(2024,5,30), "low")
-PuppetMaster.addToProject("Inbox", "t4", "desc", new Date(), "low")
-PuppetMaster.addToProject("Inbox", "t5", "desc", new Date(2024,5,27), "low")
-PuppetMaster.addToProject("Inbox", "t6", "desc", new Date(2024,5,23), "low")
-console.log(PuppetMaster.getProjectTodos("Inbox"));
-console.log(PuppetMaster.getTodaysTodos());
-console.log("-----------------------")
+// PuppetMaster.addToProject("Inbox", "t2", "desc", new Date(2024,5,22), "high")
+// PuppetMaster.addToProject("Inbox", "t3", "desc", new Date(2024,5,30), "low")
+// PuppetMaster.addToProject("Inbox", "t4", "desc", new Date(), "low")
+// PuppetMaster.addToProject("Inbox", "t5", "desc", new Date(2024,5,27), "low")
+// PuppetMaster.addToProject("Inbox", "t6", "desc", new Date(2024,5,23), "low")
+console.log(PuppetMaster.getProjectTodos("Inbox"))
+let edit = {
+    newTitle: "Christmas!",
+    desc: "Tremendous",
+    dueDate: new Date(2024, 11, 25),
+    priority: "high"
+}
+
+
+
 PuppetMaster.createProject("p1");
 PuppetMaster.addToProject("p1", "t1", "desc", new Date(), "low")
 PuppetMaster.addToProject("p1", "t2", "desc", new Date(), "high")
@@ -182,11 +216,18 @@ PuppetMaster.addToProject("p1", "t3", "desc", new Date(2024,5,30), "low")
 PuppetMaster.addToProject("p1", "t4", "desc", new Date(2024,8,2), "low")
 PuppetMaster.addToProject("p1", "t5", "desc", new Date(), "low")
 PuppetMaster.addToProject("p1", "t6", "desc", new Date(2024,8,2), "low")
-console.log(PuppetMaster.getProjectTodos("p1"));
-console.log(PuppetMaster.getWeeksTodos());
+
+PuppetMaster.tempEditTodo("t5", "p1", edit);
+console.log(PuppetMaster.getProjectTodos("p1"))
+
+
+// console.log(PuppetMaster.getTodoDetails("Inbox", "t5"));
+// console.log(PuppetMaster.getTodoDetails("p1", "t3"));
+
 
 // NEED TO DO:
 // Editing functionality
+// Get All todos?
 
 
 
