@@ -12,11 +12,6 @@ class PuppetMaster {
         return todo;
     }
 
-    static addToInbox(title, description){
-        console.log(`addToInbox function called`);
-        this.inbox.addTodo(this.createTodo(title, description));
-    }
-
     static removeFromProject(todoTitle, projectName){
         console.log(`Attempting to remove todo "${todoTitle}"`)
         if(projectName === "Inbox"){
@@ -34,11 +29,15 @@ class PuppetMaster {
 
     static addToProject(projectName, title, description) {
         console.log(`Adding to project with name ${projectName}`);
-        for (let project of this.projectArray){
-            if(project.projectName === projectName){
-                project.addTodo(this.createTodo(title, description));
-                console.log('successfully added todo')
-                break;
+        if(projectName === "Inbox") {
+            this.inbox.addTodo(this.createTodo(title, description));
+        } else {
+            for (let project of this.projectArray){
+                if(project.projectName === projectName){
+                    project.addTodo(this.createTodo(title, description));
+                    console.log('successfully added todo')
+                    break;
+                }
             }
         }
     }
@@ -123,8 +122,8 @@ console.log(PuppetMaster.projectArray[0])
 PuppetMaster.addToProject("proj 2", "t1", "desc");
 console.log(PuppetMaster.projectArray[1])
 console.log("---------------")
-console.log(PuppetMaster.removeFromProject("t1", "proj 2"))
-
+PuppetMaster.addToProject("Inbox", "t1", "desc");
+PuppetMaster.inbox.printTodos()
 
 // PuppetMaster.inboxTodos()
 
