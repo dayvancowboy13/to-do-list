@@ -30,16 +30,25 @@ class PuppetMaster {
     static addToProject(projectName, title, description) {
         console.log(`Adding to project with name ${projectName}`);
         if(projectName === "Inbox") {
-            this.inbox.addTodo(this.createTodo(title, description));
+            if(!this.inbox.addTodo(this.createTodo(title, description))){
+                this.todoNotAdded();
+            }
         } else {
             for (let project of this.projectArray){
                 if(project.projectName === projectName){
-                    project.addTodo(this.createTodo(title, description));
+                    if(!project.addTodo(this.createTodo(title, description))){
+                        this.todoNotAdded();
+                        break;
+                    }
                     console.log('successfully added todo')
                     break;
                 }
             }
         }
+    }
+
+    static todoNotAdded(){
+        alert("The project already has a todo with that title. Another could not be added")
     }
 
     static inboxTodos(){
@@ -116,14 +125,13 @@ class PuppetMaster {
     }
 }
 
-// verify functionality with non-Inbox projects
-PuppetMaster.createProject("first proj", "A great description!");
-// console.log(PuppetMaster.projectArray.length);
-
-
-// NEED TO ADD FUNCTIONALITY TO PREVENT DUPLICATES
 PuppetMaster.addToProject("Inbox", "t1", "desc");
-console.log(PuppetMaster.quickCheck("t2"))
+// PuppetMaster.addToProject("Inbox", "t1", "desc");
+
+PuppetMaster.createProject("p1");
+PuppetMaster.addToProject("p1", "t2", "desc");
+PuppetMaster.changeTodoProject("t1","Inbox", "p1")
+
 
 
 

@@ -51,8 +51,12 @@ export default class Project {
 
     addTodo (todo) {
         console.log(`Adding "${todo.title}" to ${this.name} project`);
-        this.todoArray.push(todo);
-        // console.log(this.todoArray);
+        if(this.checkTitleIsValid(todo.title)){
+            this.todoArray.push(todo);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     removeTodo (todoTitle){
