@@ -2,7 +2,7 @@ export default class Todo {
     // I did this for some reason, but don't remember now...
     bIsComplete = false;
 
-    constructor (title,description, dueDate = new Date(), priority="low"){
+    constructor (title, description, dueDate = new Date(), priority="low"){
         this.title =  title;
         this.description = description;
         this.dueDate = dueDate;

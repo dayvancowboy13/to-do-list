@@ -7,9 +7,9 @@ class PuppetMaster {
     static inbox = new Project("Inbox");
     
 
-    static createTodo(name, description){
+    static createTodo(name, description, dueDate, priority){
         console.log("creating todo obj");
-        let todo = new Todo(name, description);
+        let todo = new Todo(name, description, dueDate, priority);
         return todo;
     }
 
@@ -28,16 +28,16 @@ class PuppetMaster {
         }
     }
 
-    static addToProject(projectName, title, description) {
+    static addToProject(projectName, title, description, dueDate, priority) {
         console.log(`Adding to project with name ${projectName}`);
         if(projectName === "Inbox") {
-            if(!this.inbox.addTodo(this.createTodo(title, description))){
+            if(!this.inbox.addTodo(this.createTodo(title, description, dueDate, priority))){
                 this.todoNotAdded();
             }
         } else {
             for (let project of this.projectArray){
                 if(project.projectName === projectName){
-                    if(!project.addTodo(this.createTodo(title, description))){
+                    if(!project.addTodo(this.createTodo(title, description, dueDate, priority))){
                         this.todoNotAdded();
                         break;
                     }
@@ -79,7 +79,8 @@ class PuppetMaster {
 
         if(tempTodo !== undefined) {
             console.log(this.removeFromProject(tempTodo.title, oldProject.name))
-            this.addToProject(newProjectName, tempTodo.title, tempTodo.description)
+            this.addToProject(newProjectName, tempTodo.title, tempTodo.description,
+                tempTodo.dueDate, tempTodo.priority)
         }   else{
             console.log("couldnt find a todo with that name")
         }    
@@ -120,22 +121,83 @@ class PuppetMaster {
             }
         }
     }
+
+    static getTodaysTodos(){
+        // maybe refactor to indicate which project a todo is from?
+        const today = dateFns.format(new Date(), "MM-dd-yyyy");
+        let todayArray = new Array();
+        let i = 0;
+
+        // get any todos for today from inbox
+        for (let todo of this.inbox.todoArray){
+            console.log(dateFns.format(todo.dueDate, "MM-dd-yyyy"))
+            if (dateFns.format(todo.dueDate, "MM-dd-yyyy") === today){
+                i++;
+                todayArray.push(todo);
+            }
+        }
+        console.log(`${i} hits in the Inbox`)
+        // get any todos for today from other projects
+        for (let project of this.projectArray){
+            for (let todo of project.todoArray){
+                console.log(dateFns.format(todo.dueDate, "MM-dd-yyyy"))
+                if (dateFns.format(todo.dueDate, "MM-dd-yyyy") === today){
+                    i++;
+                    todayArray.push(todo);
+                }
+            }
+        }
+        console.log(`${i} total hits`)
+        return todayArray;
+    }
+
+    static getWeeksTodos(){
+        //return the todos for this week
+        // next seven days?
+        let thisWeekArray = new Array();
+        let i = 0;
+        // inbox
+        for (let todo of this.inbox.todoArray){
+            if (dateFns.isThisWeek(todo.dueDate)){
+                i++;
+                thisWeekArray.push(todo);
+            }
+        }
+        console.log(`${i} hits in the Inbox`)
+        // get any todos for today from other projects
+        for (let project of this.projectArray){
+            for (let todo of project.todoArray){
+                if (dateFns.isThisWeek(todo.dueDate)){
+                    i++;
+                    thisWeekArray.push(todo);
+                }
+            }
+        }
+        console.log(`${i} total hits`)
+        return thisWeekArray;
+    }
 }
 
-const t1 = new Todo("blah", "desc");
-
-console.log(t1)
-t1.changeCompleteStatus();
-console.log(t1.isComplete)
-t1.changeCompleteStatus();
-console.log(t1.isComplete)
-
-const d1 = new Date(1991,5,13);
-const d2 = new Date(1991,5,15);
-console.log(typeof d1);
-
-console.log(dateFns.isEqual(d1,d2));
-console.log(typeof ""+d1.getFullYear())
+// PuppetMaster.getTodaysTodos();
+PuppetMaster.addToProject("Inbox", "t1", "desc", new Date(), "low")
+PuppetMaster.addToProject("Inbox", "t2", "desc", new Date(2024,5,22), "high")
+PuppetMaster.addToProject("Inbox", "t3", "desc", new Date(2024,5,30), "low")
+PuppetMaster.addToProject("Inbox", "t4", "desc", new Date(2024,8,2), "low")
+PuppetMaster.addToProject("Inbox", "t5", "desc", new Date(2024,5,27), "low")
+PuppetMaster.addToProject("Inbox", "t6", "desc", new Date(2024,5,23), "low")
+console.log(PuppetMaster.getProjectTodos("Inbox"));
+console.log(PuppetMaster.getWeeksTodos());
+console.log(dateFns.lastDayOfWeek(new Date()))
+console.log("-----------------------")
+PuppetMaster.createProject("p1");
+PuppetMaster.addToProject("p1", "t1", "desc", new Date(), "low")
+PuppetMaster.addToProject("p1", "t2", "desc", new Date(), "high")
+PuppetMaster.addToProject("p1", "t3", "desc", new Date(2024,5,30), "low")
+PuppetMaster.addToProject("p1", "t4", "desc", new Date(2024,8,2), "low")
+PuppetMaster.addToProject("p1", "t5", "desc", new Date(), "low")
+PuppetMaster.addToProject("p1", "t6", "desc", new Date(2024,8,2), "low")
+console.log(PuppetMaster.getProjectTodos("p1"));
+console.log(PuppetMaster.getWeeksTodos());
 
 // NEED TO DO:
 // How to implement "Today" and "This week" lists
