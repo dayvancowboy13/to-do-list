@@ -128,52 +128,39 @@ class PuppetMaster {
         let todayArray = new Array();
         let i = 0;
 
-        // get any todos for today from inbox
         for (let todo of this.inbox.todoArray){
-            console.log(dateFns.format(todo.dueDate, "MM-dd-yyyy"))
             if (dateFns.format(todo.dueDate, "MM-dd-yyyy") === today){
-                i++;
-                todayArray.push(todo);
+                todayArray.push({todo, srcProject: "Inbox"});
             }
         }
-        console.log(`${i} hits in the Inbox`)
-        // get any todos for today from other projects
         for (let project of this.projectArray){
             for (let todo of project.todoArray){
                 console.log(dateFns.format(todo.dueDate, "MM-dd-yyyy"))
                 if (dateFns.format(todo.dueDate, "MM-dd-yyyy") === today){
-                    i++;
-                    todayArray.push(todo);
+                    todayArray.push({todo, srcProject: project.name});
                 }
             }
         }
-        console.log(`${i} total hits`)
+
         return todayArray;
     }
 
     static getWeeksTodos(){
-        //return the todos for this week
-        // next seven days?
         let thisWeekArray = new Array();
         let i = 0;
-        // inbox
+
         for (let todo of this.inbox.todoArray){
             if (dateFns.isThisWeek(todo.dueDate)){
-                i++;
-                thisWeekArray.push(todo);
+                thisWeekArray.push({todo, srcProject: "Inbox"});
             }
         }
-        console.log(`${i} hits in the Inbox`)
-        // get any todos for today from other projects
         for (let project of this.projectArray){
             for (let todo of project.todoArray){
                 if (dateFns.isThisWeek(todo.dueDate)){
-                    i++;
-                    thisWeekArray.push(todo);
+                    thisWeekArray.push({todo, srcProject: project.name});
                 }
             }
         }
-        console.log(`${i} total hits`)
         return thisWeekArray;
     }
 }
@@ -182,12 +169,11 @@ class PuppetMaster {
 PuppetMaster.addToProject("Inbox", "t1", "desc", new Date(), "low")
 PuppetMaster.addToProject("Inbox", "t2", "desc", new Date(2024,5,22), "high")
 PuppetMaster.addToProject("Inbox", "t3", "desc", new Date(2024,5,30), "low")
-PuppetMaster.addToProject("Inbox", "t4", "desc", new Date(2024,8,2), "low")
+PuppetMaster.addToProject("Inbox", "t4", "desc", new Date(), "low")
 PuppetMaster.addToProject("Inbox", "t5", "desc", new Date(2024,5,27), "low")
 PuppetMaster.addToProject("Inbox", "t6", "desc", new Date(2024,5,23), "low")
 console.log(PuppetMaster.getProjectTodos("Inbox"));
-console.log(PuppetMaster.getWeeksTodos());
-console.log(dateFns.lastDayOfWeek(new Date()))
+console.log(PuppetMaster.getTodaysTodos());
 console.log("-----------------------")
 PuppetMaster.createProject("p1");
 PuppetMaster.addToProject("p1", "t1", "desc", new Date(), "low")
@@ -200,7 +186,6 @@ console.log(PuppetMaster.getProjectTodos("p1"));
 console.log(PuppetMaster.getWeeksTodos());
 
 // NEED TO DO:
-// How to implement "Today" and "This week" lists
 // Editing functionality
 
 
