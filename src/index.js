@@ -1,4 +1,3 @@
-// this is where all the modules will be pulled into and used from
 import Todo from "./Todo.js"
 import Project from "./Project.js"
 
@@ -13,9 +12,14 @@ class PuppetMaster {
         return todo;
     }
 
-    static addToInbox(){
+    static addToInbox(title, description){
         console.log("adding todo to inbox");
-        this.inbox.addTodo(this.createTodo("Finish work", "you gotta!"));
+        this.inbox.addTodo(this.createTodo(title, description));
+    }
+
+    static addToProject(title, description) {
+        console.log("adding todo to project");
+        this.projectArray[0].addTodo(this.createTodo(title, description));
     }
 
     static inboxTodos(){
@@ -31,29 +35,48 @@ class PuppetMaster {
     static createProject(name){
         console.log("creating project object");
         let project = new Project(name);
-        // add new project to the active projects
         this.projectArray.push(project);
     }
 
-    // editTodo () {}
+    static changeTodoProject(todo){
+        // code to switch a Todo from one project to another
+    }
+
+    // the DOM class will have a function to style the list returned
+    static getProjectTodos(projectName){
+        console.log("calling getProjectTodos")
+        if(projectName === "Inbox"){
+            return this.inbox.allTodos;
+        } else {
+            // find projectName in projectArray
+            let targetProject;
+            console.log("Starting search through projectArray")
+            for (let project in this.projectArray){
+                console.log(typeof project);
+                if (project.projectName === projectName){
+                    targetProject = project;
+                    return targetProject.allTodos;
+                }
+            }
+            if (targetProject === undefined){
+                console.log("something went wrong");
+                return 20;
+            }
+        }
+    }
 }
 
-PuppetMaster.addToInbox();
+PuppetMaster.addToInbox("Finish work", "you gotta!");
 PuppetMaster.inboxTodos()
+PuppetMaster.addToInbox("more stuff", "do more!");
 
-// console.log(PuppetMaster.numberOfProjects());
+PuppetMaster.createProject("new project");
+console.log(PuppetMaster.numberOfProjects());
 
-// have a "default" project when user starts the app
-
-
-// projects are functionally separate lists of todos
-// TODO's can only be part of one project
-//      which module allows you to change projects?
-
-// Manager class? responsible for creating projects and todos
-// when switching the project that a todo is part of, it 
-// accesses the designated project and removes the todo
-// from that list, then appends it to the new one?
+PuppetMaster.addToInbox("last chance!", "uhhh");
+PuppetMaster.addToInbox("wow!", "asdfasd");
+console.log(PuppetMaster.getProjectTodos("Inbox"));
+console.log(PuppetMaster.getProjectTodos("new project"));
 
 
 /*
