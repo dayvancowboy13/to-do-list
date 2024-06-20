@@ -18,6 +18,17 @@ export default class Project {
         return this.todoArray.length;
     }
 
+    checkTitleIsValid (todoTitle){
+        // is there already a todo in the project with the title
+        // of a new todo you want to add?
+        for (let todo of this.todoArray){
+            if(todoTitle === todo.title) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     findTodo (todoTitle){
         for (let todo of this.todoArray) {
             if(todoTitle === todo.title){

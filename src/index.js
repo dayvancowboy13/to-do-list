@@ -46,6 +46,10 @@ class PuppetMaster {
         console.log("Number of items in inbox " + this.inbox.length)
     }
 
+    static quickCheck(title){
+        return this.inbox.checkTitleIsValid(title)
+    }
+
     static numberOfProjects(){
         return this.projectArray.length;
     }
@@ -59,7 +63,12 @@ class PuppetMaster {
     static changeTodoProject(todoTitle, oldProjectName, newProjectName){
         console.log("Running changeTodoProject");
 
-        let oldProject = this.getProjectFromArray(oldProjectName);
+        let oldProject;
+        if (oldProjectName === "Inbox"){
+            oldProject = this.inbox;
+        } else {
+            oldProject = this.getProjectFromArray(oldProjectName);
+        }
         let tempTodo = oldProject.findTodo(todoTitle);
 
         if(tempTodo !== undefined) {
@@ -109,28 +118,13 @@ class PuppetMaster {
 
 // verify functionality with non-Inbox projects
 PuppetMaster.createProject("first proj", "A great description!");
-console.log(PuppetMaster.projectArray.length);
-PuppetMaster.createProject("proj 2", "A great description!");
-console.log(PuppetMaster.projectArray.length);
+// console.log(PuppetMaster.projectArray.length);
 
-PuppetMaster.addToProject("first proj", "t1", "desc");
-console.log(PuppetMaster.projectArray[0])
-// PuppetMaster.addToProject("proj 2", "t1", "desc");
-console.log(PuppetMaster.projectArray[1])
-console.log("---------------")
-// PuppetMaster.changeTodoProject("t1", "first proj", "proj 2");
 
-// PuppetMaster.inboxTodos()
+// NEED TO ADD FUNCTIONALITY TO PREVENT DUPLICATES
+PuppetMaster.addToProject("Inbox", "t1", "desc");
+console.log(PuppetMaster.quickCheck("t2"))
 
-// PuppetMaster.addToInbox("t1", "desc!");
-// PuppetMaster.inbox.printTodos()
-// PuppetMaster.inboxTodos()
-// console.log("---------------")
-// PuppetMaster.addToInbox("t2", "desc!");
-// PuppetMaster.inbox.printTodos()
-// console.log("---------------")
-// console.log(PuppetMaster.removeFromProject('t4', "Inbox"))
-// PuppetMaster.inbox.printTodos()
 
 
 
