@@ -112,21 +112,32 @@ class PuppetMaster {
     }
 }
 
-// PuppetMaster.createProject("first proj", "A great description!");
-PuppetMaster.inboxTodos()
-
-
-PuppetMaster.addToInbox("t1", "desc!");
-PuppetMaster.inbox.printTodos()
-PuppetMaster.inboxTodos()
-console.log("---------------")
-PuppetMaster.addToInbox("t2", "desc!");
-PuppetMaster.inbox.printTodos()
-console.log("---------------")
-console.log(PuppetMaster.removeFromProject('t4', "Inbox"))
-PuppetMaster.inbox.printTodos()
-
 // verify functionality with non-Inbox projects
+PuppetMaster.createProject("first proj", "A great description!");
+console.log(PuppetMaster.projectArray.length);
+PuppetMaster.createProject("proj 2", "A great description!");
+console.log(PuppetMaster.projectArray.length);
+
+PuppetMaster.addToProject("first proj", "t1", "desc");
+console.log(PuppetMaster.projectArray[0])
+PuppetMaster.addToProject("proj 2", "t1", "desc");
+console.log(PuppetMaster.projectArray[1])
+console.log("---------------")
+console.log(PuppetMaster.removeFromProject("t1", "proj 2"))
+
+
+// PuppetMaster.inboxTodos()
+
+// PuppetMaster.addToInbox("t1", "desc!");
+// PuppetMaster.inbox.printTodos()
+// PuppetMaster.inboxTodos()
+// console.log("---------------")
+// PuppetMaster.addToInbox("t2", "desc!");
+// PuppetMaster.inbox.printTodos()
+// console.log("---------------")
+// console.log(PuppetMaster.removeFromProject('t4', "Inbox"))
+// PuppetMaster.inbox.printTodos()
+
 
 
 /*
