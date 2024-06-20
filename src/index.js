@@ -13,8 +13,23 @@ class PuppetMaster {
     }
 
     static addToInbox(title, description){
-        console.log("adding todo to inbox");
+        console.log(`addToInbox function called`);
         this.inbox.addTodo(this.createTodo(title, description));
+    }
+
+    static removeFromProject(todoTitle, projectName){
+        console.log(`Attempting to remove todo "${todoTitle}"`)
+        if(projectName === "Inbox"){
+            if(this.inbox.removeTodo(todoTitle)) return true;
+            else return false;
+        } else {
+            for (let project of this.projectArray){
+                if(project.projectName === projectName){
+                    if(project.removeTodo(todoTitle)) return true;
+                    else return false;
+                }
+            }
+        }
     }
 
     static addToProject(projectName, title, description) {
@@ -29,9 +44,7 @@ class PuppetMaster {
     }
 
     static inboxTodos(){
-        console.log("retrieving number of items in inbox")
-        console.log(this.inbox.length)
-
+        console.log("Number of items in inbox " + this.inbox.length)
     }
 
     static numberOfProjects(){
@@ -73,10 +86,6 @@ class PuppetMaster {
         return undefined;
     }
 
-    static deleteTodo(){
-        // just remove the todo from its project's todoArray?
-    }
-
     static getTodoDetails(){
         // DOM class will use this to display more details of a todo
     }
@@ -103,22 +112,21 @@ class PuppetMaster {
     }
 }
 
-// PuppetMaster.addToInbox("Finish work", "you gotta!");
-// PuppetMaster.inboxTodos()
-// PuppetMaster.addToInbox("more stuff", "do more!");
+// PuppetMaster.createProject("first proj", "A great description!");
+PuppetMaster.inboxTodos()
 
-PuppetMaster.createProject("new project");
-console.log(PuppetMaster.getProjectFromArray("new project"));
-PuppetMaster.createProject("best project");
-console.log(PuppetMaster.getProjectFromArray("best project"));
-// PuppetMaster.addToProject("new project", "new todo", "for new project")
-// PuppetMaster.addToProject("fake project","new todo", "for new project")
-// console.log(PuppetMaster.numberOfProjects());
 
-PuppetMaster.addToInbox("last chance!", "uhhh");
-PuppetMaster.addToInbox("wow!", "asdfasd");
-console.log(PuppetMaster.getProjectTodos("Inbox"));
-console.log(PuppetMaster.getProjectTodos("new project"));
+PuppetMaster.addToInbox("t1", "desc!");
+PuppetMaster.inbox.printTodos()
+PuppetMaster.inboxTodos()
+console.log("---------------")
+PuppetMaster.addToInbox("t2", "desc!");
+PuppetMaster.inbox.printTodos()
+console.log("---------------")
+console.log(PuppetMaster.removeFromProject('t4', "Inbox"))
+PuppetMaster.inbox.printTodos()
+
+// verify functionality with non-Inbox projects
 
 
 /*

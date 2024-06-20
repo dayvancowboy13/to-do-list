@@ -18,15 +18,32 @@ export default class Project {
         return this.todoArray.length;
     }
 
-    addTodo (todo) {
-        console.log(`Adding a todo to ${this.name} project`);
-        this.todoArray.push(todo);
-        console.log(this.todoArray);
+    printTodos (){
+        let todoString = "";
+        for(let todo of this.todoArray){
+            todoString += todo.title + " ";
+            // console.log(typeof todo)
+        }
+
+        console.log(todoString);
     }
 
-    removeTodo (todo){
-        console.log(`Removing a Todo with name ${todo.name} from project ${this.name}`);
-        this.todoArray.indexOf()
+    addTodo (todo) {
+        console.log(`Adding "${todo.title}" to ${this.name} project`);
+        this.todoArray.push(todo);
+        // console.log(this.todoArray);
+    }
+
+    removeTodo (todoTitle){
+        console.log(`Removing a Todo with name ${todoTitle} from project ${this.name}`);
+        let i = 0;
+        for (let todos of this.todoArray){
+            if(todos.title === todoTitle){
+                this.todoArray.splice(i, 1);
+                return true;
+            } else i++;
+        }
+        return false;
     }
 
 }
