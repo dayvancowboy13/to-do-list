@@ -2,21 +2,49 @@
 import Todo from "./Todo.js"
 import Project from "./Project.js"
 
-class Manager {
-    static createTodo(){
+class PuppetMaster {
+    static projectArray = new Array();
+    static inbox = new Project("Inbox");
+    
+
+    static createTodo(name, description){
         console.log("creating todo obj");
+        let todo = new Todo(name, description);
+        return todo;
     }
-    static createProject(){
-        console.log("creating project obj");
+
+    static addToInbox(){
+        console.log("adding todo to inbox");
+        this.inbox.addTodo(this.createTodo("Finish work", "you gotta!"));
     }
+
+    static inboxTodos(){
+        console.log("retrieving number of items in inbox")
+        console.log(this.inbox.length)
+
+    }
+
+    static numberOfProjects(){
+        return this.projectArray.length;
+    }
+
+    static createProject(name){
+        console.log("creating project object");
+        let project = new Project(name);
+        // add new project to the active projects
+        this.projectArray.push(project);
+    }
+
+    // editTodo () {}
 }
 
-const BigCahuna = new Manager();
+PuppetMaster.addToInbox();
+PuppetMaster.inboxTodos()
 
-Manager.createProject();
+// console.log(PuppetMaster.numberOfProjects());
 
 // have a "default" project when user starts the app
-const proj0 = new Project();
+
 
 // projects are functionally separate lists of todos
 // TODO's can only be part of one project
@@ -27,10 +55,12 @@ const proj0 = new Project();
 // accesses the designated project and removes the todo
 // from that list, then appends it to the new one?
 
-const myT = new Todo("Title", "Desc");
-const t2 = new Todo("t1", "d2");
 
-//console.log(myT.theTitle);
+/*
+DOM-interface-Func() {
+    take input from webpage
+    plug that into creating new todo
+    that new todo is then added to the designated project
 
-proj0.addTodo(myT);
-proj0.addTodo(t2);
+}
+*/

@@ -12,8 +12,5 @@ export default class Todo {
     get theTitle(){
         return `The tile for this Todo is ${this.title}`;
     }
-    
-    greet(){
-        console.log("Hello!");
-    }
+
 }

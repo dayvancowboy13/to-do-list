@@ -10,15 +10,16 @@ export default class Project {
         return this.name;
     }
 
-    func1 () {
-        console.log("Func1");
-        // console.log(bigCall);
-        console.log(this.p1); // undefined
+    get allTodos(){
+        return this.todoArray;
+    }
+
+    get length(){
+        return this.todoArray.length;
     }
 
     addTodo (todo) {
-        console.log("this function will add the todo object to the project's array");
-        console.log(this.todoArray);
+        console.log(`Adding a todo to ${this.name} project`);
         this.todoArray.push(todo);
         console.log(this.todoArray);
     }
