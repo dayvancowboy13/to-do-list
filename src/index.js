@@ -1,5 +1,6 @@
 import Todo from "./Todo.js"
 import Project from "./Project.js"
+import * as dateFns from "date-fns";
 
 class PuppetMaster {
     static projectArray = new Array();
@@ -53,10 +54,6 @@ class PuppetMaster {
 
     static inboxTodos(){
         console.log("Number of items in inbox " + this.inbox.length)
-    }
-
-    static quickCheck(title){
-        return this.inbox.checkTitleIsValid(title)
     }
 
     static numberOfProjects(){
@@ -125,12 +122,24 @@ class PuppetMaster {
     }
 }
 
-PuppetMaster.addToProject("Inbox", "t1", "desc");
-// PuppetMaster.addToProject("Inbox", "t1", "desc");
+const t1 = new Todo("blah", "desc");
 
-PuppetMaster.createProject("p1");
-PuppetMaster.addToProject("p1", "t2", "desc");
-PuppetMaster.changeTodoProject("t1","Inbox", "p1")
+console.log(t1)
+t1.changeCompleteStatus();
+console.log(t1.isComplete)
+t1.changeCompleteStatus();
+console.log(t1.isComplete)
+
+const d1 = new Date(1991,5,13);
+const d2 = new Date(1991,5,15);
+console.log(typeof d1);
+
+console.log(dateFns.isEqual(d1,d2));
+console.log(typeof ""+d1.getFullYear())
+
+// NEED TO DO:
+// How to implement "Today" and "This week" lists
+// Editing functionality
 
 
 
