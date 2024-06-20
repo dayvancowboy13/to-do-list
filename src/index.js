@@ -56,22 +56,18 @@ class PuppetMaster {
         this.projectArray.push(project);
     }
 
-    static changeTodoProject(todo, oldProjectName, newProjectName){
-        // does the order matter? remove todo from oldProject
-        // add todo to newProject
-        // get reference to oldProject from projectArray
+    static changeTodoProject(todoTitle, oldProjectName, newProjectName){
         console.log("Running changeTodoProject");
 
         let oldProject = this.getProjectFromArray(oldProjectName);
-        let newProject = this.getProjectFromArray(newProjectName);
+        let tempTodo = oldProject.findTodo(todoTitle);
 
-        
-        for (let projectTodo of oldProject){
-            // go through old project and find the todo, remove it
-            if (todo.name === projectTodo.name){
-                oldProject.removeTodo(projectTodo);
-            }
-        }
+        if(tempTodo !== undefined) {
+            console.log(this.removeFromProject(tempTodo.title, oldProject.name))
+            this.addToProject(newProjectName, tempTodo.title, tempTodo.description)
+        }   else{
+            console.log("couldnt find a todo with that name")
+        }    
     }
 
     static getProjectFromArray(projectName){
@@ -119,11 +115,10 @@ console.log(PuppetMaster.projectArray.length);
 
 PuppetMaster.addToProject("first proj", "t1", "desc");
 console.log(PuppetMaster.projectArray[0])
-PuppetMaster.addToProject("proj 2", "t1", "desc");
+// PuppetMaster.addToProject("proj 2", "t1", "desc");
 console.log(PuppetMaster.projectArray[1])
 console.log("---------------")
-PuppetMaster.addToProject("Inbox", "t1", "desc");
-PuppetMaster.inbox.printTodos()
+// PuppetMaster.changeTodoProject("t1", "first proj", "proj 2");
 
 // PuppetMaster.inboxTodos()
 

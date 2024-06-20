@@ -18,6 +18,16 @@ export default class Project {
         return this.todoArray.length;
     }
 
+    findTodo (todoTitle){
+        for (let todo of this.todoArray) {
+            if(todoTitle === todo.title){
+                return todo;
+            }
+        }
+
+        return undefined;
+    }
+
     printTodos (){
         let todoString = "";
         for(let todo of this.todoArray){
