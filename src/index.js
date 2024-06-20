@@ -17,9 +17,15 @@ class PuppetMaster {
         this.inbox.addTodo(this.createTodo(title, description));
     }
 
-    static addToProject(title, description) {
-        console.log("adding todo to project");
-        this.projectArray[0].addTodo(this.createTodo(title, description));
+    static addToProject(projectName, title, description) {
+        console.log(`Adding to project with name ${projectName}`);
+        for (let project of this.projectArray){
+            if(project.projectName === projectName){
+                project.addTodo(this.createTodo(title, description));
+                console.log('successfully added todo')
+                break;
+            }
+        }
     }
 
     static inboxTodos(){
@@ -38,8 +44,41 @@ class PuppetMaster {
         this.projectArray.push(project);
     }
 
-    static changeTodoProject(todo){
-        // code to switch a Todo from one project to another
+    static changeTodoProject(todo, oldProjectName, newProjectName){
+        // does the order matter? remove todo from oldProject
+        // add todo to newProject
+        // get reference to oldProject from projectArray
+        console.log("Running changeTodoProject");
+
+        let oldProject = this.getProjectFromArray(oldProjectName);
+        let newProject = this.getProjectFromArray(newProjectName);
+
+        
+        for (let projectTodo of oldProject){
+            // go through old project and find the todo, remove it
+            if (todo.name === projectTodo.name){
+                oldProject.removeTodo(projectTodo);
+            }
+        }
+    }
+
+    static getProjectFromArray(projectName){
+        console.log("running getProjectFromArray");
+        for (let project of this.projectArray){
+            if (project.projectName === projectName){
+                return project;
+            }
+        }
+
+        return undefined;
+    }
+
+    static deleteTodo(){
+        // just remove the todo from its project's todoArray?
+    }
+
+    static getTodoDetails(){
+        // DOM class will use this to display more details of a todo
     }
 
     // the DOM class will have a function to style the list returned
@@ -50,28 +89,31 @@ class PuppetMaster {
         } else {
             // find projectName in projectArray
             let targetProject;
-            console.log("Starting search through projectArray")
-            for (let project in this.projectArray){
-                console.log(typeof project);
+            for (let project of this.projectArray){
                 if (project.projectName === projectName){
                     targetProject = project;
                     return targetProject.allTodos;
                 }
             }
             if (targetProject === undefined){
-                console.log("something went wrong");
-                return 20;
+                console.log("something went wrong in getProjectTodos");
+                return undefined;
             }
         }
     }
 }
 
-PuppetMaster.addToInbox("Finish work", "you gotta!");
-PuppetMaster.inboxTodos()
-PuppetMaster.addToInbox("more stuff", "do more!");
+// PuppetMaster.addToInbox("Finish work", "you gotta!");
+// PuppetMaster.inboxTodos()
+// PuppetMaster.addToInbox("more stuff", "do more!");
 
 PuppetMaster.createProject("new project");
-console.log(PuppetMaster.numberOfProjects());
+console.log(PuppetMaster.getProjectFromArray("new project"));
+PuppetMaster.createProject("best project");
+console.log(PuppetMaster.getProjectFromArray("best project"));
+// PuppetMaster.addToProject("new project", "new todo", "for new project")
+// PuppetMaster.addToProject("fake project","new todo", "for new project")
+// console.log(PuppetMaster.numberOfProjects());
 
 PuppetMaster.addToInbox("last chance!", "uhhh");
 PuppetMaster.addToInbox("wow!", "asdfasd");

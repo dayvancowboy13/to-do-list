@@ -24,4 +24,9 @@ export default class Project {
         console.log(this.todoArray);
     }
 
+    removeTodo (todo){
+        console.log(`Removing a Todo with name ${todo.name} from project ${this.name}`);
+        this.todoArray.indexOf()
+    }
+
 }
