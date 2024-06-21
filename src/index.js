@@ -243,12 +243,7 @@ PuppetMaster.addToProject("p2", "t4", "desc", new Date(2024,8,2), "low")
 console.log(PuppetMaster.getAllTodos());
 
 
-// console.log(PuppetMaster.getTodoDetails("Inbox", "t5"));
-// console.log(PuppetMaster.getTodoDetails("p1", "t3"));
-
-
-// NEED TO DO:
-// Get All todos?
+// Probably start working on DOM class next time
 
 
 
