@@ -7,6 +7,10 @@ export default class ProjectMaster {
     static inbox = new Project("Inbox");
     
 
+    get projectArray(){
+        return this.projectArray;
+    }
+    
     static createTodo(name, description, dueDate, priority){
         console.log("creating todo obj");
         let todo = new Todo(name, description, dueDate, priority);
@@ -139,7 +143,6 @@ export default class ProjectMaster {
     }
 
     static getTodaysTodos(){
-        // maybe refactor to indicate which project a todo is from?
         const today = dateFns.format(new Date(), "MM-dd-yyyy");
         let todayArray = new Array();
         let i = 0;

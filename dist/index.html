@@ -6,7 +6,43 @@
     <title>Todo List Application</title>
 <script defer src="main.js"></script></head>
 <body>
-    <h1>Just testing :)</h1>
-<div id="side-bar">    </div>
+    <!-- TODO: 
+     - form and input validiation
+     - css for dialog
+      -->
+    <dialog id="add-task-dialog">
+        <div class='dialog-header'><button id="dialog-close">×</button></div>
+        <form class="new-task-form">
+        <label for="task_title">Title: </label>
+        <input autofocus id="task_title" type="text" name="book_title" maxlength=40 placeholder='New Task'>
+        <label for="description">Description: </label>
+        <input id="description" type="text" name="description" maxlength=40 placeholder='Details about this task...'>
+        <label for="due_date">Due Date: </label>
+        <input id="due_date" type="date" name="due_date">
+        <label for="priority">Priority: </label>
+        <select id="priority" name="priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+        <label for="project">Project: </label>
+        <select id="dialog-project" name="project">
+            <option value="inbox">Inbox</option>
+        </select>
+        </form>     
+        <button id='dialog-submit-new-task' >Create Task</button>
+      </dialog>
+
+<div id="header">    </div>
+<div id="side-bar">
+    <button id="add-task">Add Task</button>
+    <button id="inbox">Inbox</button>
+    <button id="todo-today">Today</button>
+    <button id="todo-week">This Week</button>
+    <h1>My Projects</h1>
+<button id="add-project">Add Project</button>
+</div>
+<div id="main-container"></div>
+<div id="footer"></div>
 </body>
 </html>
