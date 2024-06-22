@@ -38,24 +38,3 @@ DOMController.initialize();
 // PuppetMaster.addToProject("p2", "t2", "desc", new Date(), "high")
 // PuppetMaster.addToProject("p2", "t3", "desc", new Date(2024,5,30), "low")
 // PuppetMaster.addToProject("p2", "t4", "desc", new Date(2024,8,2), "low")
-
-
-// // console.log(PuppetMaster.getProjectTodos("p1"))
-
-// console.log(PuppetMaster.getAllTodos());
-
-
-// // Probably start working on DOM class next time
-
-
-
-
-
-/*
-DOM-interface-Func() {
-    take input from webpage
-    plug that into creating new todo
-    that new todo is then added to the designated project
-
-}
-*/

@@ -3,7 +3,7 @@ export default class Project {
     constructor(name="default") {
         this.name = name;
         this.todoArray = new Array();
-        console.log(`New project object created with name ${name}`);
+        console.log(`New project created with name ${name}`);
     }
 
     get projectName(){

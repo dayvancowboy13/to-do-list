@@ -1,16 +1,17 @@
 import Project from "./Project";
 import ProjectMaster from "./ProjectMaster"
+import * as dateFns from "date-fns";
 
 export default class DOMController {
 
     static initialize(){
         console.log("Starting point -- Setting things up!")
+        // console.log(`Inside DOMController initialize function, 'this' is: ${this}`)
 
         this.#initListeners();
         ProjectMaster.createProject('p1');
-        ProjectMaster.createProject('p2');
-        ProjectMaster.createProject('p3');
-        ProjectMaster.createProject('Doody');
+        ProjectMaster.createProject('Web Dev');
+
 
         // still lots to do!
         // add functionality so when user hits create task, it actually passes
@@ -24,6 +25,7 @@ export default class DOMController {
     }
 
     static #initListeners(){
+        // console.log(`Inside DOMController initListiners function, 'this' is: ${this}`)
         let buttonIDs = [
             {id:"add-task", func: this.#displayNewTaskDialog},
             {id:"inbox", func: this.#Inbox},
@@ -47,22 +49,24 @@ export default class DOMController {
     }
 
     static #displayNewTaskDialog (){
-        console.log("displaying task dialog")
         DOMController.#populateProjectSelect();
         const dialog = document.querySelector("#add-task-dialog")
         dialog.showModal();
         const closeButton = document.querySelector("#dialog-close")
-        closeButton.addEventListener("click", () => dialog.close());
+        closeButton.addEventListener("click", () => {
+            DOMController.#resetProjectSelect();
+            dialog.close();
+        });
         const submitButton = document.querySelector("#dialog-submit-new-task");
         submitButton.addEventListener("click", ()=>{
-            DOMController.#submitNewTask;
+            DOMController.#submitNewTask();
             dialog.close();
         });
     }
 
     static #populateProjectSelect(){
         let projects = ProjectMaster.projectArray;
-        let select = document.querySelector("#dialog-project")
+        let select = document.querySelector("#dialog_project");
         for (let p of projects){
             let option = document.createElement('option');
             option.value = `${p.name}`;
@@ -71,12 +75,31 @@ export default class DOMController {
         }
     }
 
+    static #resetProjectSelect(){
+        let select = document.querySelector("#dialog_project");
+        while (select.childElementCount !== 1){
+            select.removeChild(select.lastChild);
+        }
+    }
+
     static #submitNewTask(){
-        console.log("Submitting new task...")
+        const inputTaskTitle = document.querySelector("#task_title").value;
+        document.querySelector("#task_title").value = "";
+        const inputDescription = document.querySelector("#description").value;
+        document.querySelector("#description").value = "";
+        const inputDueDate = new Date(document.querySelector("#due_date").value.replace(/-/g, '\/'));
+        document.querySelector("#due_date").value = "";
+        const inputPriority = document.querySelector("#priority").value;
+        const inputProjectName = document.querySelector("#dialog_project").value;
+
+        ProjectMaster.addToProject(inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority)
+        DOMController.#resetProjectSelect();
     }
 
     static #Inbox(){
         console.log("Inbox button pressed")
+        let projectName = prompt("Which project?", "Inbox")
+        console.log(ProjectMaster.getProjectTodos(projectName))
     }
 
     static #Today(){
@@ -85,18 +108,5 @@ export default class DOMController {
 
     static #Week(){
         console.log("Week button pressed")
-    }
-
-    static firstFunc (){
-        console.log("Just testing this new class!")
-
-        ProjectMaster.getTodaysTodos();
-        ProjectMaster.addToProject("Inbox", "t1", "desc", new Date(), "low")
-        ProjectMaster.addToProject("Inbox", "t2", "desc", new Date(2024,5,22), "high")
-        ProjectMaster.addToProject("Inbox", "t3", "desc", new Date(2024,5,30), "low")
-        ProjectMaster.addToProject("Inbox", "t4", "desc", new Date(), "low")
-        ProjectMaster.addToProject("Inbox", "t5", "desc", new Date(2024,5,27), "low")
-        ProjectMaster.addToProject("Inbox", "t6", "desc", new Date(2024,5,23), "low")
-        console.log(ProjectMaster.getProjectTodos("Inbox"))
     }
 }

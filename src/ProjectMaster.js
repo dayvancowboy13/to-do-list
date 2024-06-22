@@ -12,7 +12,6 @@ export default class ProjectMaster {
     }
     
     static createTodo(name, description, dueDate, priority){
-        console.log("creating todo obj");
         let todo = new Todo(name, description, dueDate, priority);
         return todo;
     }
@@ -33,7 +32,7 @@ export default class ProjectMaster {
     }
 
     static addToProject(projectName, title, description, dueDate, priority) {
-        console.log(`Adding to project with name ${projectName}`);
+        console.log(`Attempting to project with name ${projectName}`);
         if(projectName === "Inbox") {
             if(!this.inbox.addTodo(this.createTodo(title, description, dueDate, priority))){
                 this.todoNotAdded();
@@ -65,7 +64,6 @@ export default class ProjectMaster {
     }
 
     static createProject(name){
-        console.log("creating project object");
         let project = new Project(name);
         this.projectArray.push(project);
     }
