@@ -9,23 +9,22 @@ export default class DOMController {
         // console.log(`Inside DOMController initialize function, 'this' is: ${this}`)
 
         this.#initListeners();
-        ProjectMaster.createProject('p1');
-        ProjectMaster.createProject('Web Dev');
+        // ProjectMaster.createProject('p1');
+        // ProjectMaster.createProject('Web Dev');
 
 
         // still lots to do!
-        // add functionality so when user hits create task, it actually passes
-        // to the ProjectMaster function and adds the task to the project
 
         // functionality for populating a list of projects when user selects "inbox"
         // or "today" or "this week" buttons
+        
         // addProject function
+        // includes populating the list of current projects
 
 
     }
 
     static #initListeners(){
-        // console.log(`Inside DOMController initListiners function, 'this' is: ${this}`)
         let buttonIDs = [
             {id:"add-task", func: this.#displayNewTaskDialog},
             {id:"inbox", func: this.#Inbox},
@@ -53,6 +52,55 @@ export default class DOMController {
             DOMController.#submitNewTask();
             dialog.close();
         });
+        
+        const addProjectBtn = document.querySelector("#add-project-btn");
+        addProjectBtn.addEventListener("click", () => {
+            const originalButton = document.querySelector('#add-project-btn');
+            originalButton.style.display = 'none';
+            document.querySelector("#add-project-form").style.display = "block";
+        });
+        
+        const formAddBtn = document.querySelector("#project-form-add");
+        formAddBtn.addEventListener("click", () => {
+            console.log("Clicked add button")
+            const projectName = document.querySelector('#project_name').value;
+            ProjectMaster.createProject(projectName);
+            document.querySelector("#add-project-form").style.display = "none";
+            document.querySelector('#add-project-btn').style.display = 'block';
+            document.querySelector('#project_Name').value = '';
+        });
+        const formCancelBtn = document.querySelector("#project-form-cancel");
+        formCancelBtn.addEventListener("click", () => {
+            console.log("Clicked cancel button")
+            document.querySelector('#project_name').value = '';
+            document.querySelector("#add-project-form").style.display = "none";
+            document.querySelector('#add-project-btn').style.display = 'block';
+        });
+    }
+
+    // need to display the existing projects
+    static #displayExistingProjects(){
+        console.log("This function will populate the div with all the projects already in the ProjectMaster's projectArray")
+    }
+
+    static #displayAddProjectForm(){
+        const originalButton = document.querySelector('#add-project-btn');
+        const ogButtonState = originalButton.style.display;
+        originalButton.style.display = 'none';
+        document.querySelector("#add-project-form").style.display = "block";
+        // bring up a little dialog to enter the project name -> createProject f'n
+        // ProjectMaster.createProject
+    }
+
+    static #addProject(){
+        console.log("Called #addProject function");
+        // replace the existing button with the little modal
+        const originalButton = document.querySelector('#add-project-btn');
+        const ogButtonState = originalButton.style.display;
+        originalButton.style.display = 'none';
+        document.querySelector("#add-project-form").style.display = "block";
+        // bring up a little dialog to enter the project name -> createProject f'n
+        // ProjectMaster.createProject
     }
 
     static #displayProject(){
