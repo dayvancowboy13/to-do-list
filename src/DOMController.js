@@ -42,6 +42,17 @@ export default class DOMController {
             let temp = document.querySelector(`#${button.id}`);
             temp.addEventListener('click', button.func)
         }
+        const dialog = document.querySelector("#add-task-dialog");
+        const closeButton = document.querySelector("#dialog-close");
+        closeButton.addEventListener("click", () => {
+            DOMController.#resetProjectSelect();
+            dialog.close();
+        });
+        const submitButton = document.querySelector("#dialog-submit-new-task");
+        submitButton.addEventListener("click", ()=>{
+            DOMController.#submitNewTask();
+            dialog.close();
+        });
     }
 
     static #displayProject(){
@@ -52,16 +63,7 @@ export default class DOMController {
         DOMController.#populateProjectSelect();
         const dialog = document.querySelector("#add-task-dialog")
         dialog.showModal();
-        const closeButton = document.querySelector("#dialog-close")
-        closeButton.addEventListener("click", () => {
-            DOMController.#resetProjectSelect();
-            dialog.close();
-        });
-        const submitButton = document.querySelector("#dialog-submit-new-task");
-        submitButton.addEventListener("click", ()=>{
-            DOMController.#submitNewTask();
-            dialog.close();
-        });
+        
     }
 
     static #populateProjectSelect(){
@@ -92,7 +94,11 @@ export default class DOMController {
         const inputPriority = document.querySelector("#priority").value;
         const inputProjectName = document.querySelector("#dialog_project").value;
 
-        ProjectMaster.addToProject(inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority)
+        if(inputTaskTitle === '' || inputDescription === '' || inputDueDate === ''){
+            alert("Please fill all input fields!")
+        } else {
+            ProjectMaster.addToProject(inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority)
+        }
         DOMController.#resetProjectSelect();
     }
 
