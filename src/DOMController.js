@@ -1,6 +1,7 @@
 import Project from "./Project";
 import ProjectMaster from "./ProjectMaster"
 import * as dateFns from "date-fns";
+import './style.css'
 
 export default class DOMController {
 
@@ -64,10 +65,17 @@ export default class DOMController {
         formAddBtn.addEventListener("click", () => {
             console.log("Clicked add button")
             const projectName = document.querySelector('#project_name').value;
-            ProjectMaster.createProject(projectName);
-            document.querySelector("#add-project-form").style.display = "none";
-            document.querySelector('#add-project-btn').style.display = 'block';
-            document.querySelector('#project_Name').value = '';
+            if (projectName.length === 0){
+                alert("Cannot add blank project name!")
+            } else {
+                ProjectMaster.createProject(projectName);
+                document.querySelector("#add-project-form").style.display = "none";
+                document.querySelector('#add-project-btn').style.display = 'block';
+                document.querySelector('#project_name').value = '';
+                // refresh project list on page
+                // THIS MIGHT HAVE BUGS LATER!
+                DOMController.#addToProjectList(projectName);
+            }
         });
         const formCancelBtn = document.querySelector("#project-form-cancel");
         formCancelBtn.addEventListener("click", () => {
@@ -78,9 +86,77 @@ export default class DOMController {
         });
     }
 
-    // need to display the existing projects
-    static #displayExistingProjects(){
-        console.log("This function will populate the div with all the projects already in the ProjectMaster's projectArray")
+    static #addToProjectList(projectName){
+        console.log("updating project list")
+
+        const projectList = document.querySelector("#existing-projects");
+
+        const listElem = document.createElement('li');
+        listElem.classList = "list-item";
+        
+        const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
+        const span1 = document.createElement('span');
+        span1.classList = "project-name";
+        span1.textContent = `${projectName}`;
+        const span2 = document.createElement('span');
+        span2.classList = "project-count";
+        span2.textContent = `(${activeTasks})`;
+
+        listElem.addEventListener("click", function (){
+            console.log("You clicked the list elem!")
+            DOMController.#displayProjectTasks(this.children[0].textContent);
+        });
+
+        listElem.append(span1,span2);
+        projectList.append(listElem);
+    }
+
+    static #displayProjectTasks (projectName){
+        // get the project todoArray and display on the webpage
+        // also should communicate which project is being displayed
+        console.log("outputting project todos to web page")
+
+        const displayContainer = document.querySelector("#todo-display")
+        const todoList = ProjectMaster.getProjectTodos(projectName);
+        console.log(todoList);
+        for (let todo of todoList){
+            let newCard = DOMController.#createTaskCard(todo);
+            // divvy.textContent = todo.title;
+            displayContainer.append(newCard);
+        }
+        // displayContainer.textContent = `We're gonna have some todos :)`;
+
+    }
+
+    static #createTaskCard(todo){
+        // generate the HTML to display the information of the Todo on the page
+        // html id=title
+        console.log("creating new task card");
+        const cardBase = document.createElement('div');
+        cardBase.id = todo.title;
+        cardBase.classList = "todo-card";
+        
+        //span title
+        //span duedate
+        //edit button
+        //delete button
+        return cardBase;
+    }
+
+    static #updateProjectsListing(projectName){
+        console.log('Updating project listing')
+        // will be called when user adds a task or marks a task as complete/incomplete
+
+        const projectList = document.querySelector("#existing-projects");
+        for (let child of projectList.children){
+            console.log(child)
+            if(projectName === child.children[0].textContent){
+                const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
+                console.log(ProjectMaster.getProjectFromArray(projectName));
+                child.children[1].textContent = `(${activeTasks})`;
+                console.log(`(${activeTasks})`)
+            }
+        }
     }
 
     static #displayAddProjectForm(){
@@ -101,10 +177,6 @@ export default class DOMController {
         document.querySelector("#add-project-form").style.display = "block";
         // bring up a little dialog to enter the project name -> createProject f'n
         // ProjectMaster.createProject
-    }
-
-    static #displayProject(){
-
     }
 
     static #displayNewTaskDialog (){
@@ -146,6 +218,9 @@ export default class DOMController {
             alert("Please fill all input fields!")
         } else {
             ProjectMaster.addToProject(inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority)
+            if(inputProjectName !== 'Inbox'){
+                DOMController.#updateProjectsListing(inputProjectName);
+            }
         }
         DOMController.#resetProjectSelect();
     }

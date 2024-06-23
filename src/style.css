@@ -1,15 +1,54 @@
-/* #0170f1 */
+:root {
+    /* #0170f1 */
 
-'blue-ribbon': {
-    '50': '#edfaff',
-    '100': '#d6f1ff',
-    '200': '#b6e9ff',
-    '300': '#83ddff',
-    '400': '#49c7ff',
-    '500': '#1fa8ff',
-    '600': '#078aff',
-    '700': '#0170f1',
-    '800': '#085ac5',
-    '900': '#0e4e9a',
-    '950': '#0e305d',
-},
+    --br-50: #edfaff;
+    --br-100: #d6f1ff;
+    --br-200: #b6e9ff;
+    --br-300: #83ddff;
+    --br-400: #49c7ff;
+    --br-500: #1fa8ff;
+    --br-600: #078aff;
+    --br-700: #0170f1;
+    --br-800: #085ac5;
+    --br-900: #0e4e9a;
+    --br-950: #0e305d;
+
+     font-family: Helvetica, Arial, sans-serif;
+}
+
+
+#side-bar {
+    display: grid;
+    background-color: var(--br-400);
+    max-width: 15vw;
+    border: dashed var(--br-950) 1px;
+    padding: 6px;
+
+    & h1 {
+        justify-self: center;
+        color: var(--br-950);
+        font-size: 24px;
+    }
+}
+
+#existing-projects{
+    background-color: var(--br-600);
+    list-style: none;
+}
+
+#todo-display {
+    background-color: var(--br-200);
+    border: solid black 2px;
+}
+
+.list-item {
+    cursor: pointer;
+}
+
+.project-count {
+    /* display: flex; */
+    font-weight: bolder;
+    padding-left: 10px;
+    /* justify-self: end; */
+}
+    

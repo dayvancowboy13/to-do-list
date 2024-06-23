@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List Application</title>
+    <link href="./style.css" rel="stylesheet">
 </head>
 <body>
     <!-- TODO: 
@@ -40,15 +41,18 @@
     <button id="todo-today">Today</button>
     <button id="todo-week">This Week</button>
     <h1>My Projects</h1>
-<button id="add-project-btn">Add Project</button>
-<div id="add-project-form" style="display: none">
-    <input id="project_name" placeholder="Project Name" type="text" maxlength="20" minlength="1">
-    <button id="project-form-add" class="project-form-btn">Add</button>
-    <button id="project-form-cancel" class="project-form-btn">Cancel</button>
+    <button id="add-project-btn">Add Project</button>
+    <div id="add-project-form" style="display: none">
+        <input autofocus id="project_name" placeholder="Project Name" type="text" maxlength="12" minlength="1">
+        <button id="project-form-add" class="project-form-btn">Add</button>
+     <button id="project-form-cancel" class="project-form-btn">Cancel</button>
+    </div>
+    <ul id="existing-projects">
+    </ul>
 </div>
-<div id="existing-projects"></div>
+<div id="todo-display">
+    <!-- <div class="todo-card"><span>Title</span><span>DueDate</span><span>edit</span><span>delete</span></div> -->
 </div>
-<div id="main-container"></div>
 <div id="footer"></div>
 </body>
 </html>

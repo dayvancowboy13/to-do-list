@@ -18,6 +18,18 @@ export default class Project {
         return this.todoArray.length;
     }
 
+    get activeTaskCount(){
+        let count = 0;
+        for (let todo of this.todoArray){
+            console.log(todo.isComplete)
+            if(!todo.isComplete){
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     checkTitleIsValid (todoTitle){
         // is there already a todo in the project with the title
         // of a new todo you want to add?
