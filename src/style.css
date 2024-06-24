@@ -39,9 +39,11 @@
 #todo-display {
     background-color: var(--br-200);
     border: solid black 2px;
+    width: 80vw;
+    min-height: 10em;
 }
 
-.list-item {
+.list-item, .card-button {
     cursor: pointer;
 }
 
@@ -53,8 +55,22 @@
 }
 
 .todo-card {
-    display: grid;
+    display: flex;
+    justify-content: center;
+    border: solid black 1px;
+    border-radius: 8px;
+    max-width: 50%;
+
     
     gap: 8px;
+
+    & #edit-btn {
+        justify-self: end;
+        color: white;
+    }
+    & #del-btn {
+        justify-self: end;
+        color: red;
+    }
 }
     

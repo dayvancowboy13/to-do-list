@@ -98,9 +98,12 @@ export default class DOMController {
         const span1 = document.createElement('span');
         span1.classList = "project-name";
         span1.textContent = `${projectName}`;
+
         const span2 = document.createElement('span');
         span2.classList = "project-count";
-        span2.textContent = `(${activeTasks})`;
+        if(activeTasks !== 0){
+            span2.textContent = `(${activeTasks})`;
+        }
 
         listElem.addEventListener("click", function (){
             console.log("You clicked the list elem!")
@@ -117,6 +120,7 @@ export default class DOMController {
         console.log("outputting project todos to web page")
 
         const displayContainer = document.querySelector("#todo-display")
+        displayContainer.classList = `${projectName}`
         // clear the container
         while (displayContainer.hasChildNodes()) {
             displayContainer.removeChild(displayContainer.lastChild);
@@ -137,6 +141,17 @@ export default class DOMController {
         cardBase.id = todo.title;
         cardBase.classList = "todo-card";
         
+        
+        const spanCheck = document.createElement("span");
+        spanCheck.id = "card-check";
+        spanCheck.classList = "task-card card-button";
+        spanCheck.textContent = "checkbox";
+        spanCheck.addEventListener("click", () => {
+            console.log("Clicking the check button")
+            todo.changeCompleteStatus();
+            DOMController.#updateProjectsListing(document.querySelector("#todo-display").className);
+        });
+
         const spanTitle = document.createElement("span");
         spanTitle.id = "card-title";
         spanTitle.classList = "task-card";
@@ -145,16 +160,30 @@ export default class DOMController {
         spanDueDate.id = "card-date";
         spanDueDate.classList = "task-card";
         spanDueDate.textContent = dateFns.format(todo.dueDate, "MMM-dd-yyyy");
+
         const spanEdit = document.createElement("span");
         spanEdit.id = "card-edit";
-        spanEdit.classList = "task-card";
+        spanEdit.classList = "task-card card-button";
         spanEdit.textContent = "edit";
+        spanEdit.addEventListener("click", () =>{
+            console.log("Clicking the edit button")
+            // open the edit menu
+        });
         const spanDelete = document.createElement("span");
         spanDelete.id = "card-delete";
-        spanDelete.classList = "task-card";
+        spanDelete.classList = "task-card card-button";
         spanDelete.textContent = "del";
+        spanDelete.addEventListener("click", () =>{
+            console.log("Clicking the del button")
+            // remove the task from the project
+            console.log(todo);
+            let projectName = document.querySelector("#todo-display").className;
+            ProjectMaster.removeFromProject(todo.title, projectName);
+            DOMController.#updateProjectsListing(projectName);
+            DOMController.#displayProjectTasks(projectName);
+        });
 
-        cardBase.append(spanTitle, spanDueDate, spanEdit, spanDelete);
+        cardBase.append(spanCheck, spanTitle, spanDueDate, spanEdit, spanDelete);
 
         return cardBase;
     }
@@ -165,9 +194,11 @@ export default class DOMController {
         if (projectName === "Inbox"){
             const inboxButton = document.querySelector("#inbox");
             const activeTasks = ProjectMaster.inbox.activeTaskCount;
-            console.log(ProjectMaster.inbox);
-            inboxButton.children[1].textContent = `(${activeTasks})`;
-            // console.log(`(${activeTasks})`)
+            if(activeTasks !== 0){
+                inboxButton.children[1].textContent = `(${activeTasks})`;
+            } else {
+                inboxButton.children[1].textContent = '';
+            }
         } else{
             const projectList = document.querySelector("#existing-projects");
             for (let child of projectList.children){
@@ -175,8 +206,11 @@ export default class DOMController {
                 if(projectName === child.children[0].textContent){
                     const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
                     console.log(ProjectMaster.getProjectFromArray(projectName));
-                    child.children[1].textContent = `(${activeTasks})`;
-                    console.log(`(${activeTasks})`)
+                    if(activeTasks !== 0){
+                        child.children[1].textContent = `(${activeTasks})`;
+                    } else {
+                        child.children[1].textContent = '';
+                    }
                 }
             }
         }
