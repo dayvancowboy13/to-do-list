@@ -51,4 +51,10 @@
     padding-left: 10px;
     /* justify-self: end; */
 }
+
+.todo-card {
+    display: grid;
+    
+    gap: 8px;
+}
     

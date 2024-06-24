@@ -117,66 +117,69 @@ export default class DOMController {
         console.log("outputting project todos to web page")
 
         const displayContainer = document.querySelector("#todo-display")
+        // clear the container
+        while (displayContainer.hasChildNodes()) {
+            displayContainer.removeChild(displayContainer.lastChild);
+        }
+
         const todoList = ProjectMaster.getProjectTodos(projectName);
         console.log(todoList);
         for (let todo of todoList){
             let newCard = DOMController.#createTaskCard(todo);
-            // divvy.textContent = todo.title;
             displayContainer.append(newCard);
         }
-        // displayContainer.textContent = `We're gonna have some todos :)`;
-
     }
 
     static #createTaskCard(todo){
         // generate the HTML to display the information of the Todo on the page
-        // html id=title
         console.log("creating new task card");
         const cardBase = document.createElement('div');
         cardBase.id = todo.title;
         cardBase.classList = "todo-card";
         
-        //span title
-        //span duedate
-        //edit button
-        //delete button
+        const spanTitle = document.createElement("span");
+        spanTitle.id = "card-title";
+        spanTitle.classList = "task-card";
+        spanTitle.textContent = todo.title;
+        const spanDueDate = document.createElement("span");
+        spanDueDate.id = "card-date";
+        spanDueDate.classList = "task-card";
+        spanDueDate.textContent = dateFns.format(todo.dueDate, "MMM-dd-yyyy");
+        const spanEdit = document.createElement("span");
+        spanEdit.id = "card-edit";
+        spanEdit.classList = "task-card";
+        spanEdit.textContent = "edit";
+        const spanDelete = document.createElement("span");
+        spanDelete.id = "card-delete";
+        spanDelete.classList = "task-card";
+        spanDelete.textContent = "del";
+
+        cardBase.append(spanTitle, spanDueDate, spanEdit, spanDelete);
+
         return cardBase;
     }
 
     static #updateProjectsListing(projectName){
         console.log('Updating project listing')
         // will be called when user adds a task or marks a task as complete/incomplete
-
-        const projectList = document.querySelector("#existing-projects");
-        for (let child of projectList.children){
-            console.log(child)
-            if(projectName === child.children[0].textContent){
-                const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
-                console.log(ProjectMaster.getProjectFromArray(projectName));
-                child.children[1].textContent = `(${activeTasks})`;
-                console.log(`(${activeTasks})`)
+        if (projectName === "Inbox"){
+            const inboxButton = document.querySelector("#inbox");
+            const activeTasks = ProjectMaster.inbox.activeTaskCount;
+            console.log(ProjectMaster.inbox);
+            inboxButton.children[1].textContent = `(${activeTasks})`;
+            // console.log(`(${activeTasks})`)
+        } else{
+            const projectList = document.querySelector("#existing-projects");
+            for (let child of projectList.children){
+                console.log(child)
+                if(projectName === child.children[0].textContent){
+                    const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
+                    console.log(ProjectMaster.getProjectFromArray(projectName));
+                    child.children[1].textContent = `(${activeTasks})`;
+                    console.log(`(${activeTasks})`)
+                }
             }
         }
-    }
-
-    static #displayAddProjectForm(){
-        const originalButton = document.querySelector('#add-project-btn');
-        const ogButtonState = originalButton.style.display;
-        originalButton.style.display = 'none';
-        document.querySelector("#add-project-form").style.display = "block";
-        // bring up a little dialog to enter the project name -> createProject f'n
-        // ProjectMaster.createProject
-    }
-
-    static #addProject(){
-        console.log("Called #addProject function");
-        // replace the existing button with the little modal
-        const originalButton = document.querySelector('#add-project-btn');
-        const ogButtonState = originalButton.style.display;
-        originalButton.style.display = 'none';
-        document.querySelector("#add-project-form").style.display = "block";
-        // bring up a little dialog to enter the project name -> createProject f'n
-        // ProjectMaster.createProject
     }
 
     static #displayNewTaskDialog (){
@@ -218,17 +221,14 @@ export default class DOMController {
             alert("Please fill all input fields!")
         } else {
             ProjectMaster.addToProject(inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority)
-            if(inputProjectName !== 'Inbox'){
-                DOMController.#updateProjectsListing(inputProjectName);
-            }
+            DOMController.#updateProjectsListing(inputProjectName);
         }
         DOMController.#resetProjectSelect();
     }
 
     static #Inbox(){
         console.log("Inbox button pressed")
-        let projectName = prompt("Which project?", "Inbox")
-        console.log(ProjectMaster.getProjectTodos(projectName))
+        DOMController.#displayProjectTasks("Inbox");
     }
 
     static #Today(){

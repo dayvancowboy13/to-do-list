@@ -10,6 +10,10 @@ export default class ProjectMaster {
     get projectArray(){
         return this.projectArray;
     }
+
+    get inbox() {
+        return this.inbox;
+    }
     
     static createTodo(name, description, dueDate, priority){
         let todo = new Todo(name, description, dueDate, priority);
