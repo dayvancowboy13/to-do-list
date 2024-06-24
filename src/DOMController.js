@@ -7,22 +7,13 @@ export default class DOMController {
 
     static initialize(){
         console.log("Starting point -- Setting things up!")
-        // console.log(`Inside DOMController initialize function, 'this' is: ${this}`)
 
         this.#initListeners();
-        // ProjectMaster.createProject('p1');
-        // ProjectMaster.createProject('Web Dev');
-
 
         // still lots to do!
 
         // functionality for populating a list of projects when user selects "inbox"
         // or "today" or "this week" buttons
-        
-        // addProject function
-        // includes populating the list of current projects
-
-
     }
 
     static #initListeners(){
@@ -30,14 +21,10 @@ export default class DOMController {
             {id:"add-task", func: this.#displayNewTaskDialog},
             {id:"inbox", func: this.#Inbox},
             {id:"todo-today", func: this.#Today},
-            {id:"todo-week", func: this.#Week}
+            {id:"todo-week", func: this.#Week},
+            {id:"add-project-btn", func: this.#AddProject}
         ]
 
-        // What happens for each one:
-        // add task:
-        // bring up the dialog for user to enter task info
-        // within that dialog, when you hit "submit", it will add that task to
-        // whatever project
         for (let button of buttonIDs){
             let temp = document.querySelector(`#${button.id}`);
             temp.addEventListener('click', button.func)
@@ -52,13 +39,6 @@ export default class DOMController {
         submitButton.addEventListener("click", ()=>{
             DOMController.#submitNewTask();
             dialog.close();
-        });
-        
-        const addProjectBtn = document.querySelector("#add-project-btn");
-        addProjectBtn.addEventListener("click", () => {
-            const originalButton = document.querySelector('#add-project-btn');
-            originalButton.style.display = 'none';
-            document.querySelector("#add-project-form").style.display = "block";
         });
         
         const formAddBtn = document.querySelector("#project-form-add");
@@ -107,14 +87,14 @@ export default class DOMController {
 
         listElem.addEventListener("click", function (){
             console.log("You clicked the list elem!")
-            DOMController.#displayProjectTasks(this.children[0].textContent);
+            DOMController.#displayProjectTasks(this.children[0].textContent, null);
         });
 
         listElem.append(span1,span2);
         projectList.append(listElem);
     }
 
-    static #displayProjectTasks (projectName){
+    static #displayProjectTasks (projectName, todoArray, mode="regular"){
         // get the project todoArray and display on the webpage
         // also should communicate which project is being displayed
         console.log("outputting project todos to web page")
@@ -126,64 +106,129 @@ export default class DOMController {
             displayContainer.removeChild(displayContainer.lastChild);
         }
 
-        const todoList = ProjectMaster.getProjectTodos(projectName);
-        console.log(todoList);
-        for (let todo of todoList){
-            let newCard = DOMController.#createTaskCard(todo);
-            displayContainer.append(newCard);
+        let todoList;
+        if (mode === "regular") {
+            todoList = ProjectMaster.getProjectTodos(projectName);
+            for (let todo of todoList){
+                let newCard = DOMController.#createTaskCard(todo);
+                displayContainer.append(newCard);
+            }
+        } else if (mode === "today") {
+            todoList = todoArray;
+            for (let todo of todoList){
+                let newCard = DOMController.#createTaskCard(todo, mode);
+                displayContainer.append(newCard);
+            }
+        } else if (mode === "week") {
+            todoList = todoArray;
+            for (let todo of todoList){
+                let newCard = DOMController.#createTaskCard(todo, mode);
+                displayContainer.append(newCard);
+            }
         }
+        
+        console.log(todoList);
+        
     }
 
-    static #createTaskCard(todo){
+    static #createTaskCard(todo, mode="regular"){
         // generate the HTML to display the information of the Todo on the page
-        console.log("creating new task card");
+        console.log(`creating new task card in ${mode} mode`);
         const cardBase = document.createElement('div');
-        cardBase.id = todo.title;
         cardBase.classList = "todo-card";
         
-        
-        const spanCheck = document.createElement("span");
-        spanCheck.id = "card-check";
-        spanCheck.classList = "task-card card-button";
-        spanCheck.textContent = "checkbox";
-        spanCheck.addEventListener("click", () => {
-            console.log("Clicking the check button")
-            todo.changeCompleteStatus();
-            DOMController.#updateProjectsListing(document.querySelector("#todo-display").className);
-        });
+        if (mode === "regular"){
+            cardBase.id = todo.title;
+            if (todo.isComplete) {
+                cardBase.classList += " todo-inactive";
+            } else {
+                cardBase.classList = "todo-card";
+            }
 
-        const spanTitle = document.createElement("span");
-        spanTitle.id = "card-title";
-        spanTitle.classList = "task-card";
-        spanTitle.textContent = todo.title;
-        const spanDueDate = document.createElement("span");
-        spanDueDate.id = "card-date";
-        spanDueDate.classList = "task-card";
-        spanDueDate.textContent = dateFns.format(todo.dueDate, "MMM-dd-yyyy");
+            const spanCheck = document.createElement("span");
+            spanCheck.id = "card-check";
+            spanCheck.classList = "task-card card-button";
+            spanCheck.textContent = "checkbox";
+            spanCheck.addEventListener("click", () => {
+                console.log("Clicking the check button")
+                todo.changeCompleteStatus();
+                if (todo.isComplete) {
+                    cardBase.classList += " todo-inactive";
+                } else {
+                    cardBase.classList = "todo-card";
+                }
+                DOMController.#updateProjectsListing(document.querySelector("#todo-display").className);
+            });
 
-        const spanEdit = document.createElement("span");
-        spanEdit.id = "card-edit";
-        spanEdit.classList = "task-card card-button";
-        spanEdit.textContent = "edit";
-        spanEdit.addEventListener("click", () =>{
-            console.log("Clicking the edit button")
-            // open the edit menu
-        });
-        const spanDelete = document.createElement("span");
-        spanDelete.id = "card-delete";
-        spanDelete.classList = "task-card card-button";
-        spanDelete.textContent = "del";
-        spanDelete.addEventListener("click", () =>{
-            console.log("Clicking the del button")
-            // remove the task from the project
-            console.log(todo);
-            let projectName = document.querySelector("#todo-display").className;
-            ProjectMaster.removeFromProject(todo.title, projectName);
-            DOMController.#updateProjectsListing(projectName);
-            DOMController.#displayProjectTasks(projectName);
-        });
+            const spanTitle = document.createElement("span");
+            spanTitle.id = "card-title";
+            spanTitle.classList = "task-card";
+            spanTitle.textContent = todo.title;
+            const spanDueDate = document.createElement("span");
+            spanDueDate.id = "card-date";
+            spanDueDate.classList = "task-card";
+            spanDueDate.textContent = dateFns.format(todo.dueDate, "MMM-dd-yyyy");
 
-        cardBase.append(spanCheck, spanTitle, spanDueDate, spanEdit, spanDelete);
+            const spanEdit = document.createElement("span");
+            spanEdit.id = "card-edit";
+            spanEdit.classList = "task-card card-button";
+            spanEdit.textContent = "edit";
+            spanEdit.addEventListener("click", () =>{
+                console.log("Clicking the edit button")
+                // open the edit menu
+            });
+            const spanDelete = document.createElement("span");
+            spanDelete.id = "card-delete";
+            spanDelete.classList = "task-card card-button";
+            spanDelete.textContent = "del";
+            spanDelete.addEventListener("click", () =>{
+                console.log("Clicking the del button")
+                // remove the task from the project
+                console.log(todo);
+                let projectName = document.querySelector("#todo-display").className;
+                ProjectMaster.removeFromProject(todo.title, projectName);
+                DOMController.#updateProjectsListing(projectName);
+                DOMController.#displayProjectTasks(projectName, null);
+            });
+
+            cardBase.append(spanCheck, spanTitle, spanDueDate, spanEdit, spanDelete);
+        } else if (mode === "today"){
+            cardBase.id = todo.todo.title;
+            if(todo.todo.isComplete) {
+                cardBase.classList += " todo-inactive"
+            }
+
+            const spanTitle = document.createElement("span");
+            spanTitle.id = "card-title";
+            spanTitle.classList = "task-card";
+            spanTitle.textContent = todo.todo.title;
+            const spanSource = document.createElement("span");
+            spanSource.id = "card-source";
+            spanSource.classList = "task-card";
+            spanSource.textContent = `From: ${todo.srcProject}`;
+
+            cardBase.append(spanTitle, spanSource);
+        } else if (mode === "week"){
+            cardBase.id = todo.todo.title;
+            if(todo.todo.isComplete) {
+                cardBase.classList += " todo-inactive"
+            }
+
+            const spanTitle = document.createElement("span");
+            spanTitle.id = "card-title";
+            spanTitle.classList = "task-card";
+            spanTitle.textContent = todo.todo.title;
+            const spanDueDate = document.createElement("span");
+            spanDueDate.id = "card-date";
+            spanDueDate.classList = "task-card";
+            spanDueDate.textContent = dateFns.format(todo.todo.dueDate, "MMM-dd-yyyy");
+            const spanSource = document.createElement("span");
+            spanSource.id = "card-source";
+            spanSource.classList = "task-card";
+            spanSource.textContent = `From: ${todo.srcProject}`;
+
+            cardBase.append(spanTitle, spanDueDate, spanSource);
+        }
 
         return cardBase;
     }
@@ -262,14 +307,26 @@ export default class DOMController {
 
     static #Inbox(){
         console.log("Inbox button pressed")
-        DOMController.#displayProjectTasks("Inbox");
+        DOMController.#displayProjectTasks("Inbox", null);
     }
 
     static #Today(){
-        console.log("Today button pressed")
+        console.log("Today button pressed");
+        const todayTodos = ProjectMaster.getTodaysTodos();
+        DOMController.#displayProjectTasks(null, todayTodos, "today");
+
     }
 
     static #Week(){
         console.log("Week button pressed")
+        const weekTodos = ProjectMaster.getWeeksTodos();
+        DOMController.#displayProjectTasks(null, weekTodos, "week");
+    }
+
+    static #AddProject(){
+        console.log("Add project button pressed");
+        const originalButton = document.querySelector('#add-project-btn');
+        originalButton.style.display = 'none';
+        document.querySelector("#add-project-form").style.display = "block";
     }
 }

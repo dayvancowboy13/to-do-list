@@ -152,6 +152,7 @@ export default class ProjectMaster {
         for (let todo of this.inbox.todoArray){
             if (dateFns.format(todo.dueDate, "MM-dd-yyyy") === today){
                 todayArray.push({todo, srcProject: "Inbox"});
+                // todayArray.push(todo);
             }
         }
         for (let project of this.projectArray){
@@ -159,6 +160,7 @@ export default class ProjectMaster {
                 console.log(dateFns.format(todo.dueDate, "MM-dd-yyyy"))
                 if (dateFns.format(todo.dueDate, "MM-dd-yyyy") === today){
                     todayArray.push({todo, srcProject: project.name});
+                    // todayArray.push(todo);
                 }
             }
         }
