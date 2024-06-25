@@ -14,6 +14,20 @@ export default class ProjectMaster {
     get inbox() {
         return this.inbox;
     }
+
+    static checkProjectNameIsValid(projectName){
+        console.log(
+            "Checking if project name already in use"
+        );
+        for (let project of this.projectArray){
+            console.log(projectName)
+            console.log(`Currently checking against ${project.projectName}`);
+            if (project.projectName === projectName){
+                return false;
+            }
+        }
+        return true;
+    }
     
     static createTodo(name, description, dueDate, priority){
         let todo = new Todo(name, description, dueDate, priority);
@@ -93,7 +107,6 @@ export default class ProjectMaster {
     }
 
     static getProjectFromArray(projectName){
-        console.log("running getProjectFromArray");
         for (let project of this.projectArray){
             if (project.projectName === projectName){
                 return project;

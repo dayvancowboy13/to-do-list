@@ -16,8 +16,23 @@
      font-family: Helvetica, Arial, sans-serif;
 }
 
+header {
+    display:grid;
+    background-color: var(--br-700);
+
+    & h1 {
+        justify-self: center;
+    }
+}
+
+#main-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 
 #side-bar {
+    grid-column: 1/2;
     display: grid;
     background-color: var(--br-400);
     max-width: 15vw;
@@ -34,9 +49,14 @@
 #existing-projects{
     background-color: var(--br-600);
     list-style: none;
+    
+    & li {
+        margin: 5px;
+    }
 }
 
 #todo-display {
+    grid-column: 2/3;
     display:grid;
     /* justify-content: center; */
     background-color: var(--br-200);

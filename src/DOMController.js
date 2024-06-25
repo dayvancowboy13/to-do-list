@@ -47,6 +47,8 @@ export default class DOMController {
             const projectName = document.querySelector('#project_name').value;
             if (projectName.length === 0){
                 alert("Cannot add blank project name!")
+            } else if (!ProjectMaster.checkProjectNameIsValid(projectName)) {
+                alert("That project name is already taken!");
             } else {
                 ProjectMaster.createProject(projectName);
                 document.querySelector("#add-project-form").style.display = "none";

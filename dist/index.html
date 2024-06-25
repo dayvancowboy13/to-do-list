@@ -7,6 +7,9 @@
     <link href="./style.css" rel="stylesheet">
 <script defer src="main.js"></script></head>
 <body>
+    <header>
+        <h1>Todo!</h1>
+    </header>
     <!-- TODO: 
      - form and input validiation
      - css for dialog
@@ -33,26 +36,26 @@
         </form>     
         <button id='dialog-submit-new-task' >Create Task</button>
     </dialog>
-
-<div id="header">    </div>
-<div id="side-bar">
-    <button id="add-task" class="list-item">Add Task</button>
-    <button id="inbox" class="list-item"><span class="project-name">Inbox</span><span class="project-count"></span></button>
-    <button id="todo-today" class="list-item">Today</button>
-    <button id="todo-week" class="list-item">This Week</button>
-    <h1>My Projects</h1>
-    <button id="add-project-btn">Add Project</button>
-    <div id="add-project-form" style="display: none">
-        <input autofocus id="project_name" placeholder="Project Name" type="text" maxlength="12" minlength="1">
-        <button id="project-form-add" class="project-form-btn">Add</button>
-     <button id="project-form-cancel" class="project-form-btn">Cancel</button>
+    <div id="main-container">
+        <div id="side-bar">
+            <button id="add-task" class="list-item">Add Task</button>
+            <button id="inbox" class="list-item"><span class="project-name">Inbox</span><span class="project-count"></span></button>
+            <button id="todo-today" class="list-item">Today</button>
+            <button id="todo-week" class="list-item">This Week</button>
+            <h1>Projects</h1>
+            <button id="add-project-btn">Add Project</button>
+            <div id="add-project-form" style="display: none">
+                <input autofocus id="project_name" placeholder="Project Name" type="text" maxlength="12" minlength="1">
+                <button id="project-form-add" class="project-form-btn">Add</button>
+            <button id="project-form-cancel" class="project-form-btn">Cancel</button>
+            </div>
+            <ul id="existing-projects">
+            </ul>
+        </div>
+        <div id="todo-display">
+            <!-- <div class="todo-card"><span>Title</span><span>DueDate</span><span id="edit-btn">edit</span><span id="del-btn">delete</span></div> -->
+        </div>
     </div>
-    <ul id="existing-projects">
-    </ul>
-</div>
-<div id="todo-display">
-    <!-- <div class="todo-card"><span>Title</span><span>DueDate</span><span id="edit-btn">edit</span><span id="del-btn">delete</span></div> -->
-</div>
-<div id="footer"></div>
+    <footer></footer>
 </body>
 </html>
