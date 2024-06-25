@@ -15,6 +15,12 @@ export default class ProjectMaster {
         return this.inbox;
     }
 
+    static isProjectEmpty(projectName){
+        if(this.getProjectFromArray(projectName).length === 0){
+            return true;
+        } else return false;
+    }
+
     static checkProjectNameIsValid(projectName){
         console.log(
             "Checking if project name already in use"
@@ -50,7 +56,7 @@ export default class ProjectMaster {
     }
 
     static addToProject(projectName, title, description, dueDate, priority) {
-        console.log(`Attempting to project with name ${projectName}`);
+        console.log(`Attempting to add todo to project with name ${projectName}`);
         if(projectName === "Inbox") {
             if(!this.inbox.addTodo(this.createTodo(title, description, dueDate, priority))){
                 this.todoNotAdded();
@@ -214,14 +220,29 @@ export default class ProjectMaster {
         return allTodos;
     }
 
-    static editTodo(todoTitle, projectName, edits){
+    static editTodo(todoTitle, projectName, newTitle, desc, 
+        dueDate, priority){
         if(projectName === "Inbox"){
-            this.inbox.editTodo(todoTitle, edits.newTitle, edits.desc, 
-                edits.dueDate, edits.priority);
+            this.inbox.editTodo(todoTitle, newTitle, desc, 
+                dueDate, priority);
         }
         else {
             this.getProjectFromArray(projectName).editTodo(todoTitle, 
-                edits.newTitle, edits.desc, edits.dueDate, edits.priority);
+                newTitle, desc, dueDate, priority);
         }
+    }
+
+    static removeProject(projectName){
+        //code to remove projectName from the projectArray
+        /* something like this:
+        let i = 0;
+        for (let todos of this.todoArray){
+            if(todos.title === todoTitle){
+                this.todoArray.splice(i, 1);
+                return true;
+            } else i++;
+        }
+        return false;
+        */
     }
 }

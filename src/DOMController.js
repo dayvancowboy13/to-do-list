@@ -32,7 +32,7 @@ export default class DOMController {
         const dialog = document.querySelector("#add-task-dialog");
         const closeButton = document.querySelector("#dialog-close");
         closeButton.addEventListener("click", () => {
-            DOMController.#resetProjectSelect();
+            DOMController.#resetProjectSelect("#project-select-create");
             dialog.close();
         });
         const submitButton = document.querySelector("#dialog-submit-new-task");
@@ -77,22 +77,34 @@ export default class DOMController {
         listElem.classList = "list-item";
         
         const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
-        const span1 = document.createElement('span');
-        span1.classList = "project-name";
-        span1.textContent = `${projectName}`;
+        const spanProjectName = document.createElement('span');
+        spanProjectName.classList = "project-name";
+        spanProjectName.textContent = `${projectName}`;
 
-        const span2 = document.createElement('span');
-        span2.classList = "project-count";
+        const spanProjectCount = document.createElement('span');
+        spanProjectCount.classList = "project-count";
         if(activeTasks !== 0){
-            span2.textContent = `(${activeTasks})`;
+            spanProjectCount.textContent = `(${activeTasks})`;
         }
+
+        const spanProjectDelete = document.createElement('span');
+        spanProjectDelete.classList = "project-delete";
+        spanProjectDelete.textContent = "del";
+        spanProjectDelete.addEventListener("click", function removeProject(){
+            console.log("Removing project from listing");
+            //if project is empty, delete it
+            if (ProjectMaster.isProjectEmpty(projectName)){
+                ProjectMaster.removeProject(projectName);
+            }
+            // if it still has todos in it, bring up a prompt to double check with the user
+        });
 
         listElem.addEventListener("click", function (){
             console.log("You clicked the list elem!")
             DOMController.#displayProjectTasks(this.children[0].textContent, null);
         });
 
-        listElem.append(span1,span2);
+        listElem.append(spanProjectName,spanProjectCount, spanProjectDelete);
         projectList.append(listElem);
     }
 
@@ -170,6 +182,10 @@ export default class DOMController {
             spanDueDate.id = "card-date";
             spanDueDate.classList = "task-card";
             spanDueDate.textContent = dateFns.format(todo.dueDate, "MMM-dd-yyyy");
+            const spanPriority = document.createElement('span');
+            spanPriority.id = "card-priority";
+            spanTitle.classList = "task-card";
+            spanPriority.textContent = `Priority: ${todo.priority}`;
 
             const spanEdit = document.createElement("span");
             spanEdit.id = "card-edit";
@@ -177,7 +193,7 @@ export default class DOMController {
             spanEdit.textContent = "edit";
             spanEdit.addEventListener("click", () =>{
                 console.log("Clicking the edit button")
-                // open the edit menu
+                DOMController.#Edit(todo);
             });
             const spanDelete = document.createElement("span");
             spanDelete.id = "card-delete";
@@ -193,7 +209,7 @@ export default class DOMController {
                 DOMController.#displayProjectTasks(projectName, null);
             });
 
-            cardBase.append(spanCheck, spanTitle, spanDueDate, spanEdit, spanDelete);
+            cardBase.append(spanCheck, spanTitle, spanDueDate, spanPriority, spanEdit, spanDelete);
         } else if (mode === "today"){
             cardBase.id = todo.todo.title;
             if(todo.todo.isComplete) {
@@ -208,8 +224,12 @@ export default class DOMController {
             spanSource.id = "card-source";
             spanSource.classList = "task-card";
             spanSource.textContent = `From: ${todo.srcProject}`;
+            const spanPriority = document.createElement('span');
+            spanPriority.id = "card-priority";
+            spanTitle.classList = "task-card";
+            spanPriority.textContent = `Priority: ${todo.todo.priority}`;
 
-            cardBase.append(spanTitle, spanSource);
+            cardBase.append(spanTitle, spanPriority, spanSource);
         } else if (mode === "week"){
             cardBase.id = todo.todo.title;
             if(todo.todo.isComplete) {
@@ -228,8 +248,12 @@ export default class DOMController {
             spanSource.id = "card-source";
             spanSource.classList = "task-card";
             spanSource.textContent = `From: ${todo.srcProject}`;
+            const spanPriority = document.createElement('span');
+            spanPriority.id = "card-priority";
+            spanTitle.classList = "task-card";
+            spanPriority.textContent = `Priority: ${todo.todo.priority}`;
 
-            cardBase.append(spanTitle, spanDueDate, spanSource);
+            cardBase.append(spanTitle, spanDueDate, spanPriority, spanSource);
         }
 
         return cardBase;
@@ -264,15 +288,15 @@ export default class DOMController {
     }
 
     static #displayNewTaskDialog (){
-        DOMController.#populateProjectSelect();
+        DOMController.#populateProjectSelect("#project-select-create");
         const dialog = document.querySelector("#add-task-dialog")
         dialog.showModal();
         
     }
 
-    static #populateProjectSelect(){
+    static #populateProjectSelect(elementID){
         let projects = ProjectMaster.projectArray;
-        let select = document.querySelector("#dialog_project");
+        let select = document.querySelector(elementID);
         for (let p of projects){
             let option = document.createElement('option');
             option.value = `${p.name}`;
@@ -281,8 +305,8 @@ export default class DOMController {
         }
     }
 
-    static #resetProjectSelect(){
-        let select = document.querySelector("#dialog_project");
+    static #resetProjectSelect(elementID){
+        let select = document.querySelector(elementID);
         while (select.childElementCount !== 1){
             select.removeChild(select.lastChild);
         }
@@ -296,7 +320,7 @@ export default class DOMController {
         const inputDueDate = new Date(document.querySelector("#due_date").value.replace(/-/g, '\/'));
         document.querySelector("#due_date").value = "";
         const inputPriority = document.querySelector("#priority").value;
-        const inputProjectName = document.querySelector("#dialog_project").value;
+        const inputProjectName = document.querySelector("#project-select-create").value;
 
         if(inputTaskTitle === '' || inputDescription === '' || inputDueDate === ''){
             alert("Please fill all input fields!")
@@ -304,7 +328,7 @@ export default class DOMController {
             ProjectMaster.addToProject(inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority)
             DOMController.#updateProjectsListing(inputProjectName);
         }
-        DOMController.#resetProjectSelect();
+        DOMController.#resetProjectSelect("#project-select-create");
     }
 
     static #Inbox(){
@@ -330,5 +354,59 @@ export default class DOMController {
         const originalButton = document.querySelector('#add-project-btn');
         originalButton.style.display = 'none';
         document.querySelector("#add-project-form").style.display = "block";
+        document.querySelector("#project_name").focus();
+    }
+
+    static #Edit(todo){
+        console.log(`Editing the todo`);
+        const dialog = document.querySelector("#edit-task-dialog");
+        DOMController.#populateProjectSelect("#project-select-edit");
+        dialog.showModal();
+        
+        const currentProject = document.querySelector("#todo-display").className;
+        const submitButton = document.querySelector("#dialog-submit-edit-task");
+
+        document.querySelector("#task_title_edit").value = todo.title;
+        document.querySelector("#description_edit").value = todo.description;
+        document.querySelector("#due_date_edit").value = dateFns.format(todo.dueDate, "yyyy-MM-dd");
+        document.querySelector("#priority_edit").value = todo.priority;
+        document.querySelector("#project-select-edit").value = currentProject;
+
+        submitButton.addEventListener("click", function hitEditSubmit(){
+            console.log("Submitting the edit");
+            const inputTaskTitle = document.querySelector("#task_title_edit").value;
+            document.querySelector("#task_title_edit").value = "";
+            const inputDescription = document.querySelector("#description_edit").value;
+            document.querySelector("#description_edit").value = "";
+            const inputDueDate = new Date(document.querySelector("#due_date_edit").value.replace(/-/g, '\/'));
+            document.querySelector("#due_date_edit").value = "";
+            const inputPriority = document.querySelector("#priority_edit").value;
+            const inputProjectName = document.querySelector("#project-select-edit").value;
+    
+            if(inputTaskTitle === '' || inputDescription === '' || inputDueDate === ''){
+                alert("Please fill all input fields!")
+            } else {
+                console.log(`If/Else block; inputProjectName: ${inputProjectName},
+                    currentProject: ${currentProject}`);
+                if (inputProjectName !== currentProject){
+                    console.log("The todo is changing projects")
+                    ProjectMaster.changeTodoProject(todo.title, currentProject, inputProjectName);
+                    DOMController.#updateProjectsListing(currentProject);
+                } 
+                ProjectMaster.editTodo(todo.title, inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority);
+                dialog.close();
+                DOMController.#resetProjectSelect("#project-select-edit");
+                DOMController.#updateProjectsListing(inputProjectName);
+                DOMController.#displayProjectTasks(currentProject, null);
+                submitButton.removeEventListener("click", hitEditSubmit);
+            }
+        });
+
+        const closeButton = document.querySelector("#edit-dialog-close");
+        closeButton.addEventListener("click", function closeEdit () {
+            dialog.close();
+            DOMController.#resetProjectSelect("#project-select-edit");
+            closeButton.removeEventListener("click", closeEdit);
+        });
     }
 }
