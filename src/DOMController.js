@@ -1,6 +1,6 @@
 import Project from "./Project";
 import ProjectMaster from "./ProjectMaster"
-import * as dateFns from "date-fns";
+import { format } from "date-fns";
 import './style.css'
 
 export default class DOMController {
@@ -187,7 +187,7 @@ export default class DOMController {
             //checkButton.addEventListener("click", () => { });
 
             spanTitle.textContent = todo.title;
-            spanDueDate.textContent = dateFns.format(todo.dueDate, "MMM-dd-yyyy");
+            spanDueDate.textContent = format(todo.dueDate, "MMM-dd-yyyy");
             spanPriority.textContent = `Priority: ${todo.priority}`;
 
             const spanExpand = document.createElement('span');
@@ -230,7 +230,7 @@ export default class DOMController {
         } else if (mode === "week"){
 
             spanTitle.textContent = todo.todo.title;
-            spanDueDate.textContent = dateFns.format(todo.todo.dueDate, "MMM-dd-yyyy");
+            spanDueDate.textContent = format(todo.todo.dueDate, "MMM-dd-yyyy");
             const spanSource = document.createElement("span");
             spanSource.id = "card-source";
             spanSource.classList = "task-card";
@@ -322,11 +322,9 @@ export default class DOMController {
         detailsCloseBtn.onclick = () => {detailsDialog.close()};
         
         detailsDialog.showModal();
-
-        // console.log(document.querySelector('#details-body'));
         document.querySelector("#details-title").textContent = title;
         document.querySelector('#details-desc').textContent = desc;
-        document.querySelector('#details-duedate').textContent = dateFns.format(dueDate, "MMM-dd-yyyy");
+        document.querySelector('#details-duedate').textContent = format(dueDate, "MMM-dd-yyyy");
         document.querySelector('#details-priority').textContent = priority.toUpperCase();
 
 
@@ -370,25 +368,19 @@ export default class DOMController {
 
         document.querySelector("#task_title_edit").value = todo.title;
         document.querySelector("#description_edit").value = todo.description;
-        document.querySelector("#due_date_edit").value = dateFns.format(todo.dueDate, "yyyy-MM-dd");
+        document.querySelector("#due_date_edit").value = format(todo.dueDate, "yyyy-MM-dd");
         document.querySelector("#priority_edit").value = todo.priority;
         document.querySelector("#project-select-edit").value = currentProject;
 
         submitButton.onclick = ()=> {
             console.log("Submitting the edit");
             const inputTaskTitle = document.querySelector("#task_title_edit").value;
-            console.log(`Input title: ${inputTaskTitle}`);
             const inputDescription = document.querySelector("#description_edit").value;
-            console.log(`Input desc: ${inputDescription}`);
             const inputDueDate = new Date(document.querySelector("#due_date_edit").value.replace(/-/g, '\/'));
-            console.log(`Input due date: ${inputDueDate}`);
             const inputPriority = document.querySelector("#priority_edit").value;
-            console.log(`Input priority: ${inputPriority}`);
             const inputProjectName = document.querySelector("#project-select-edit").value;
-            console.log(`Input project name: ${inputProjectName}`);
     
             if(inputTaskTitle === '' || inputDescription === '' || inputDueDate === ''){
-                console.log(`Title: ${inputTaskTitle}, description: ${inputDescription}, duedate: ${inputDueDate}`);
                 alert("Please fill all input fields!")
             } else {
                 // checking if the todo is moving projects

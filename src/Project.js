@@ -3,7 +3,6 @@ export default class Project {
     constructor(name="default") {
         this.name = name;
         this.todoArray = new Array();
-        console.log(`New project created with name ${name}`);
     }
 
     get projectName(){
@@ -55,7 +54,6 @@ export default class Project {
         let todoString = "";
         for(let todo of this.todoArray){
             todoString += todo.title + " ";
-            // console.log(typeof todo)
         }
 
         console.log(todoString);
