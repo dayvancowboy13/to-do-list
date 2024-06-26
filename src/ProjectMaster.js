@@ -60,16 +60,17 @@ export default class ProjectMaster {
         if(projectName === "Inbox") {
             if(!this.inbox.addTodo(this.createTodo(title, description, dueDate, priority))){
                 this.todoNotAdded();
+                return false;
             }
         } else {
             for (let project of this.projectArray){
                 if(project.projectName === projectName){
                     if(!project.addTodo(this.createTodo(title, description, dueDate, priority))){
                         this.todoNotAdded();
-                        break;
+                        return false;
                     }
                     console.log('successfully added todo')
-                    break;
+                    return true;
                 }
             }
         }
@@ -103,11 +104,16 @@ export default class ProjectMaster {
         }
         let tempTodo = oldProject.findTodo(todoTitle);
 
+        // console.log
+
+        // if the todo retrieved from old project is valid:
         if(tempTodo !== undefined) {
-            console.log(this.removeFromProject(tempTodo.title, oldProject.name))
-            this.addToProject(newProjectName, tempTodo.title, tempTodo.description,
-                tempTodo.dueDate, tempTodo.priority)
-        }   else{
+
+            if(this.addToProject(newProjectName, tempTodo.title, tempTodo.description,
+                tempTodo.dueDate, tempTodo.priority)){
+                this.removeFromProject(tempTodo.title, oldProject.name);
+            }
+        } else{
             console.log("couldnt find a todo with that name")
         }    
     }
@@ -233,18 +239,13 @@ export default class ProjectMaster {
     }
 
     static removeProject(projectName){
-        //code to remove projectName from the projectArray
-        console.log(`Project array before: ${this.projectArray.length}`);
         let i = 0;
         for (let project of this.projectArray){
             if(project.name === projectName){
                 this.projectArray.splice(i, 1);
-                console.log(`Project array after: ${this.projectArray.length}`);
                 return true;
             } else i++;
         }
-        console.log(`Project array after: ${this.projectArray.length}`);
         return false;
-        
     }
 }

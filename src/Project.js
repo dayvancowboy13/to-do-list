@@ -22,7 +22,6 @@ export default class Project {
         console.log("calling activeTaskCount")
         let count = 0;
         for (let todo of this.todoArray){
-            console.log(todo.isComplete)
             if(!todo.isComplete){
                 count++;
             }

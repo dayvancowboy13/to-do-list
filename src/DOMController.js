@@ -323,7 +323,7 @@ export default class DOMController {
         
         detailsDialog.showModal();
 
-        console.log(document.querySelector('#details-body'));
+        // console.log(document.querySelector('#details-body'));
         document.querySelector("#details-title").textContent = title;
         document.querySelector('#details-desc').textContent = desc;
         document.querySelector('#details-duedate').textContent = dateFns.format(dueDate, "MMM-dd-yyyy");
@@ -365,7 +365,7 @@ export default class DOMController {
         DOMController.#populateProjectSelect("#project-select-edit");
         dialog.showModal();
         
-        const currentProject = document.querySelector("#todo-display").className;
+        let currentProject = document.querySelector("#todo-display").className;
         const submitButton = document.querySelector("#dialog-submit-edit-task");
 
         document.querySelector("#task_title_edit").value = todo.title;
@@ -374,36 +374,40 @@ export default class DOMController {
         document.querySelector("#priority_edit").value = todo.priority;
         document.querySelector("#project-select-edit").value = currentProject;
 
-        submitButton.addEventListener("click", function hitEditSubmit(){
+        submitButton.onclick = ()=> {
             console.log("Submitting the edit");
             const inputTaskTitle = document.querySelector("#task_title_edit").value;
-            document.querySelector("#task_title_edit").value = "";
+            console.log(`Input title: ${inputTaskTitle}`);
             const inputDescription = document.querySelector("#description_edit").value;
-            document.querySelector("#description_edit").value = "";
+            console.log(`Input desc: ${inputDescription}`);
             const inputDueDate = new Date(document.querySelector("#due_date_edit").value.replace(/-/g, '\/'));
-            document.querySelector("#due_date_edit").value = "";
+            console.log(`Input due date: ${inputDueDate}`);
             const inputPriority = document.querySelector("#priority_edit").value;
+            console.log(`Input priority: ${inputPriority}`);
             const inputProjectName = document.querySelector("#project-select-edit").value;
+            console.log(`Input project name: ${inputProjectName}`);
     
             if(inputTaskTitle === '' || inputDescription === '' || inputDueDate === ''){
-                alert("Please fill all input fields!")
                 console.log(`Title: ${inputTaskTitle}, description: ${inputDescription}, duedate: ${inputDueDate}`);
+                alert("Please fill all input fields!")
             } else {
-                console.log(`If/Else block; inputProjectName: ${inputProjectName},
-                    currentProject: ${currentProject}`);
+                // checking if the todo is moving projects
+                currentProject = document.querySelector("#todo-display").className;
                 if (inputProjectName !== currentProject){
                     console.log("The todo is changing projects")
                     ProjectMaster.changeTodoProject(todo.title, currentProject, inputProjectName);
-                    DOMController.#updateProjectsListing(currentProject);
-                } 
-                ProjectMaster.editTodo(todo.title, inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority);
+                } else {
+                    console.log("Editing within same project")
+                    ProjectMaster.editTodo(todo.title, inputProjectName, inputTaskTitle, inputDescription, inputDueDate, inputPriority);
+                    }
+                DOMController.#updateProjectsListing(currentProject);
                 dialog.close();
                 DOMController.#resetProjectSelect("#project-select-edit");
                 DOMController.#updateProjectsListing(inputProjectName);
                 DOMController.#displayProjectTasks(currentProject, null);
-                submitButton.removeEventListener("click", hitEditSubmit);
+                // submitButton.removeEventListener("click", hitEditSubmit);
             }
-        });
+        };
 
         const closeButton = document.querySelector("#edit-dialog-close");
         closeButton.addEventListener("click", function closeEdit () {
