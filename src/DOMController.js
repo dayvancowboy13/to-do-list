@@ -70,16 +70,19 @@ export default class DOMController {
 
     static #addToProjectList(projectName){
         console.log("updating project list")
-
         const projectList = document.querySelector("#existing-projects");
 
         const listElem = document.createElement('li');
         listElem.classList = "list-item";
+        listElem.id = projectName;
         
         const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
         const spanProjectName = document.createElement('span');
         spanProjectName.classList = "project-name";
         spanProjectName.textContent = `${projectName}`;
+        spanProjectName.onclick = () => {
+            DOMController.#displayProjectTasks(spanProjectName.textContent, null);
+        };
 
         const spanProjectCount = document.createElement('span');
         spanProjectCount.classList = "project-count";
@@ -87,24 +90,27 @@ export default class DOMController {
             spanProjectCount.textContent = `(${activeTasks})`;
         }
 
-        const spanProjectDelete = document.createElement('span');
-        spanProjectDelete.classList = "project-delete";
-        spanProjectDelete.textContent = "del";
-        spanProjectDelete.addEventListener("click", function removeProject(){
+        const btnProjectDelete = document.createElement('button');
+        btnProjectDelete.classList = "project-delete";
+        btnProjectDelete.textContent = "del";
+        btnProjectDelete.onclick = () => {
             console.log("Removing project from listing");
-            //if project is empty, delete it
             if (ProjectMaster.isProjectEmpty(projectName)){
                 ProjectMaster.removeProject(projectName);
+                for (let projectListing of projectList.children){
+                    console.log(projectListing);
+                    if(projectListing.id === projectName){
+                        console.log("found and removing project element")
+                        projectList.removeChild(projectListing);
+                    }
+                }
+
+            } else {
+                alert("Project is not empty!");
             }
-            // if it still has todos in it, bring up a prompt to double check with the user
-        });
+        }
 
-        listElem.addEventListener("click", function (){
-            console.log("You clicked the list elem!")
-            DOMController.#displayProjectTasks(this.children[0].textContent, null);
-        });
-
-        listElem.append(spanProjectName,spanProjectCount, spanProjectDelete);
+        listElem.append(spanProjectName,spanProjectCount, btnProjectDelete);
         projectList.append(listElem);
     }
 

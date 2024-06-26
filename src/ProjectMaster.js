@@ -234,15 +234,17 @@ export default class ProjectMaster {
 
     static removeProject(projectName){
         //code to remove projectName from the projectArray
-        /* something like this:
+        console.log(`Project array before: ${this.projectArray.length}`);
         let i = 0;
-        for (let todos of this.todoArray){
-            if(todos.title === todoTitle){
-                this.todoArray.splice(i, 1);
+        for (let project of this.projectArray){
+            if(project.name === projectName){
+                this.projectArray.splice(i, 1);
+                console.log(`Project array after: ${this.projectArray.length}`);
                 return true;
             } else i++;
         }
+        console.log(`Project array after: ${this.projectArray.length}`);
         return false;
-        */
+        
     }
 }

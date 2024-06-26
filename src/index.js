@@ -1,6 +1,7 @@
 // import Todo from "./Todo.js"
 // import Project from "./Project.js"
 import DOMController from "./DOMController.js"
+import './style.css'
 // import * as dateFns from "date-fns";
 // import ProjectMaster from "./ProjectMaster.js"
 
