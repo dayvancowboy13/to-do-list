@@ -98,7 +98,6 @@ export default class DOMController {
             if (ProjectMaster.isProjectEmpty(projectName)){
                 ProjectMaster.removeProject(projectName);
                 for (let projectListing of projectList.children){
-                    console.log(projectListing);
                     if(projectListing.id === projectName){
                         console.log("found and removing project element")
                         projectList.removeChild(projectListing);
@@ -115,8 +114,6 @@ export default class DOMController {
     }
 
     static #displayProjectTasks (projectName, todoArray, mode="regular"){
-        // get the project todoArray and display on the webpage
-        // also should communicate which project is being displayed
         console.log("outputting project todos to web page")
 
         const displayContainer = document.querySelector("#todo-display")
@@ -145,10 +142,7 @@ export default class DOMController {
                 let newCard = DOMController.#createTaskCard(todo, mode);
                 displayContainer.append(newCard);
             }
-        }
-        
-        console.log(todoList);
-        
+        }        
     }
 
     static #createTaskCard(todo, mode="regular"){
@@ -156,20 +150,31 @@ export default class DOMController {
         console.log(`creating new task card in ${mode} mode`);
         const cardBase = document.createElement('div');
         cardBase.classList = "todo-card";
+        cardBase.id = todo.title;
+        if (todo.isComplete) {
+            cardBase.classList += " todo-inactive";
+        } else {
+            cardBase.classList = "todo-card";
+        }
+        const spanTitle = document.createElement("span");
+        spanTitle.id = "card-title";
+        spanTitle.classList = "task-card";
+
+        const spanDueDate = document.createElement("span");
+        spanDueDate.id = "card-date";
+        spanDueDate.classList = "task-card";
+
+        const spanPriority = document.createElement('span');
+        spanPriority.id = "card-priority";
+        spanTitle.classList = "task-card";
         
         if (mode === "regular"){
-            cardBase.id = todo.title;
-            if (todo.isComplete) {
-                cardBase.classList += " todo-inactive";
-            } else {
-                cardBase.classList = "todo-card";
-            }
 
-            const spanCheck = document.createElement("span");
-            spanCheck.id = "card-check";
-            spanCheck.classList = "task-card card-button";
-            spanCheck.textContent = "checkbox";
-            spanCheck.addEventListener("click", () => {
+            const checkButton = document.createElement("button");
+            checkButton.id = "card-check";
+            checkButton.classList = "task-card card-button";
+            checkButton.textContent = "check";
+            checkButton.onclick = () => {
                 console.log("Clicking the check button")
                 todo.changeCompleteStatus();
                 if (todo.isComplete) {
@@ -178,19 +183,11 @@ export default class DOMController {
                     cardBase.classList = "todo-card";
                 }
                 DOMController.#updateProjectsListing(document.querySelector("#todo-display").className);
-            });
+            }
+            //checkButton.addEventListener("click", () => { });
 
-            const spanTitle = document.createElement("span");
-            spanTitle.id = "card-title";
-            spanTitle.classList = "task-card";
             spanTitle.textContent = todo.title;
-            const spanDueDate = document.createElement("span");
-            spanDueDate.id = "card-date";
-            spanDueDate.classList = "task-card";
             spanDueDate.textContent = dateFns.format(todo.dueDate, "MMM-dd-yyyy");
-            const spanPriority = document.createElement('span');
-            spanPriority.id = "card-priority";
-            spanTitle.classList = "task-card";
             spanPriority.textContent = `Priority: ${todo.priority}`;
 
             const spanEdit = document.createElement("span");
@@ -207,56 +204,32 @@ export default class DOMController {
             spanDelete.textContent = "del";
             spanDelete.addEventListener("click", () =>{
                 console.log("Clicking the del button")
-                // remove the task from the project
-                console.log(todo);
                 let projectName = document.querySelector("#todo-display").className;
                 ProjectMaster.removeFromProject(todo.title, projectName);
                 DOMController.#updateProjectsListing(projectName);
                 DOMController.#displayProjectTasks(projectName, null);
             });
 
-            cardBase.append(spanCheck, spanTitle, spanDueDate, spanPriority, spanEdit, spanDelete);
+            cardBase.append(checkButton, spanTitle, spanDueDate, spanPriority, spanEdit, spanDelete);
         } else if (mode === "today"){
-            cardBase.id = todo.todo.title;
-            if(todo.todo.isComplete) {
-                cardBase.classList += " todo-inactive"
-            }
 
-            const spanTitle = document.createElement("span");
-            spanTitle.id = "card-title";
-            spanTitle.classList = "task-card";
             spanTitle.textContent = todo.todo.title;
             const spanSource = document.createElement("span");
             spanSource.id = "card-source";
             spanSource.classList = "task-card";
             spanSource.textContent = `From: ${todo.srcProject}`;
-            const spanPriority = document.createElement('span');
-            spanPriority.id = "card-priority";
-            spanTitle.classList = "task-card";
             spanPriority.textContent = `Priority: ${todo.todo.priority}`;
 
             cardBase.append(spanTitle, spanPriority, spanSource);
         } else if (mode === "week"){
-            cardBase.id = todo.todo.title;
-            if(todo.todo.isComplete) {
-                cardBase.classList += " todo-inactive"
-            }
 
-            const spanTitle = document.createElement("span");
-            spanTitle.id = "card-title";
-            spanTitle.classList = "task-card";
             spanTitle.textContent = todo.todo.title;
-            const spanDueDate = document.createElement("span");
-            spanDueDate.id = "card-date";
-            spanDueDate.classList = "task-card";
             spanDueDate.textContent = dateFns.format(todo.todo.dueDate, "MMM-dd-yyyy");
             const spanSource = document.createElement("span");
             spanSource.id = "card-source";
             spanSource.classList = "task-card";
             spanSource.textContent = `From: ${todo.srcProject}`;
-            const spanPriority = document.createElement('span');
-            spanPriority.id = "card-priority";
-            spanTitle.classList = "task-card";
+
             spanPriority.textContent = `Priority: ${todo.todo.priority}`;
 
             cardBase.append(spanTitle, spanDueDate, spanPriority, spanSource);
@@ -279,10 +252,8 @@ export default class DOMController {
         } else{
             const projectList = document.querySelector("#existing-projects");
             for (let child of projectList.children){
-                console.log(child)
                 if(projectName === child.children[0].textContent){
                     const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
-                    console.log(ProjectMaster.getProjectFromArray(projectName));
                     if(activeTasks !== 0){
                         child.children[1].textContent = `(${activeTasks})`;
                     } else {
