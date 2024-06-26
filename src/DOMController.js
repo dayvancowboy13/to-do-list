@@ -391,6 +391,7 @@ export default class DOMController {
     
             if(inputTaskTitle === '' || inputDescription === '' || inputDueDate === ''){
                 alert("Please fill all input fields!")
+                console.log(`Title: ${inputTaskTitle}, description: ${inputDescription}, duedate: ${inputDueDate}`);
             } else {
                 console.log(`If/Else block; inputProjectName: ${inputProjectName},
                     currentProject: ${currentProject}`);
