@@ -190,6 +190,12 @@ export default class DOMController {
             spanDueDate.textContent = dateFns.format(todo.dueDate, "MMM-dd-yyyy");
             spanPriority.textContent = `Priority: ${todo.priority}`;
 
+            const spanExpand = document.createElement('span');
+            spanExpand.id = "card-details";
+            spanExpand.classList = "task-card card-button"
+            spanExpand.textContent = "Details";
+            spanExpand.onclick = () => this.#renderDetails(todo.title, todo.description, todo.dueDate, todo.priority);
+
             const spanEdit = document.createElement("span");
             spanEdit.id = "card-edit";
             spanEdit.classList = "task-card card-button";
@@ -210,7 +216,7 @@ export default class DOMController {
                 DOMController.#displayProjectTasks(projectName, null);
             });
 
-            cardBase.append(checkButton, spanTitle, spanDueDate, spanPriority, spanEdit, spanDelete);
+            cardBase.append(checkButton, spanTitle, spanDueDate, spanPriority, spanExpand, spanEdit, spanDelete);
         } else if (mode === "today"){
 
             spanTitle.textContent = todo.todo.title;
@@ -306,6 +312,25 @@ export default class DOMController {
             DOMController.#updateProjectsListing(inputProjectName);
         }
         DOMController.#resetProjectSelect("#project-select-create");
+    }
+
+    static #renderDetails (title, desc, dueDate, priority){
+        console.log("rendering the details")
+        const detailsDialog = document.querySelector("#details-dialog");
+        // const detailsBody = document.querySelector("#details-body");
+        const detailsCloseBtn = document.querySelector("#details-dialog-close");
+        detailsCloseBtn.onclick = () => {detailsDialog.close()};
+        
+        detailsDialog.showModal();
+
+        console.log(document.querySelector('#details-body'));
+        document.querySelector("#details-title").textContent = title;
+        document.querySelector('#details-desc').textContent = desc;
+        document.querySelector('#details-duedate').textContent = dateFns.format(dueDate, "MMM-dd-yyyy");
+        document.querySelector('#details-priority').textContent = priority.toUpperCase();
+
+
+
     }
 
     static #Inbox(){

@@ -101,4 +101,9 @@ header {
 .todo-card.todo-inactive {
     background-color: red;
 }
+
+.details-dialog-label {
+    padding-right: 6px;
+    font-weight:800;
+}
     
