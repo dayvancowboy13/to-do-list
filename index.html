@@ -59,6 +59,15 @@
             </form>     
             <button id='dialog-submit-edit-task' >Edit Task</button>
     </dialog>
+    <dialog id="details-dialog">
+        <div class='dialog-header'><button id="details-dialog-close">×</button></div>
+        <div id="details-body">
+            <div id="todo-title"><span class="details-dialog-label">Title:</span> <span id="details-title"></span></div>
+            <div id="todo-desc"><span class="details-dialog-label">Description:</span> <span id="details-desc"></span></div>
+            <div id="todo-duedate"><span class="details-dialog-label">Due:</span> <span id="details-duedate"></span></div>
+            <div id="todo-priority"><span class="details-dialog-label">Priority:</span> <span id="details-priority"></span></div>
+        </div>
+    </dialog>
     <div id="main-container">
         <div id="side-bar">
             <button id="add-task" class="list-item">Add Task</button>
