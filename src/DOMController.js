@@ -170,10 +170,13 @@ export default class DOMController {
         
         if (mode === "regular"){
 
-            const checkButton = document.createElement("button");
+            const checkButton = document.createElement("input");
+            checkButton.type = 'checkbox';
             checkButton.id = "card-check";
             checkButton.classList = "task-card card-button";
-            checkButton.textContent = "check";
+            if (todo.isComplete){
+                checkButton.checked = "checked";
+            }
             checkButton.onclick = () => {
                 console.log("Clicking the check button")
                 todo.changeCompleteStatus();
@@ -251,7 +254,7 @@ export default class DOMController {
             const inboxButton = document.querySelector("#inbox");
             const activeTasks = ProjectMaster.inbox.activeTaskCount;
             if(activeTasks !== 0){
-                inboxButton.children[1].textContent = `(${activeTasks})`;
+                inboxButton.children[1].textContent = `${activeTasks}`;
             } else {
                 inboxButton.children[1].textContent = '';
             }
@@ -261,7 +264,7 @@ export default class DOMController {
                 if(projectName === child.children[0].textContent){
                     const activeTasks = ProjectMaster.getProjectFromArray(projectName).activeTaskCount;
                     if(activeTasks !== 0){
-                        child.children[1].textContent = `(${activeTasks})`;
+                        child.children[1].textContent = `${activeTasks}`;
                     } else {
                         child.children[1].textContent = '';
                     }

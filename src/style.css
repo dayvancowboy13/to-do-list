@@ -18,7 +18,7 @@
 
 header {
     display:grid;
-    background-color: var(--br-700);
+    background-color: var(--br-500);
 
     & h1 {
         justify-self: center;
@@ -34,9 +34,9 @@ header {
 #side-bar {
     grid-column: 1/2;
     display: grid;
-    background-color: var(--br-400);
+    background-color: var(--br-200);
     max-width: 15vw;
-    border: dashed var(--br-950) 1px;
+    border-right: solid var(--br-400) 1px;
     padding: 6px;
 
     & h1 {
@@ -44,10 +44,34 @@ header {
         color: var(--br-950);
         font-size: 24px;
     }
+
+    & button, li {
+        cursor: pointer;
+        background-color: inherit;
+        margin: 5px;
+        font-size: 1.2rem;
+        font-weight: 400;
+        /* border: solid var(--br-800) 1px; */
+        border: none;
+        border-radius: 8px;
+        color: var(--br-800);
+
+        padding: 4%;
+        text-align: start;
+
+
+    }
+
+    & button:hover {
+        font-size: 1.3rem;
+        font-weight: bolder;
+
+    }
 }
 
+
 #existing-projects{
-    background-color: var(--br-600);
+    /* background-color: var(--br-600); */
     list-style: none;
     
     & li {
@@ -58,9 +82,8 @@ header {
 #todo-display {
     grid-column: 2/3;
     display:grid;
-    /* justify-content: center; */
-    background-color: var(--br-200);
-    border: solid black 2px;
+    background-color: var(--br-100);
+    /* border: solid black 2px; */
     width: 80vw;
     min-height: 10em;
     padding: 20px;
@@ -70,22 +93,48 @@ header {
     cursor: pointer;
 }
 
+#inbox {
+    display: flex;
+    justify-content: space-between;
+}
+
+#existing-projects {
+    padding-left: 0;
+}
+
+ul#existing-projects > li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: start;
+}
+
+/* ul#existing-projects > li:hover::before {
+    content: ">>"
+}
+
+ul#existing-projects > li:c {
+    content: ">>"
+} */
+
 .project-count {
-    /* display: flex; */
-    font-weight: bolder;
+
+    font-weight: 600;
+    color: var(--br-200);
+    background-color: var(--br-800);
+    border-radius: 20px;
     padding: 0 10px 0 10px;
-    /* justify-self: end; */
 }
 
 .todo-card {
     display: flex;
     justify-content: center;
-    border: solid black 1px;
+    align-items: center;
+    background-color: var(--br-600);
+    color: var(--br-100);
     border-radius: 8px;
-    max-width: 50%;
+    max-width: 70%;
     height: 50px;
-
-    
     gap: 8px;
 
     & #edit-btn {
@@ -98,8 +147,23 @@ header {
     }
 }
 
+input[type="checkbox"] {
+    /* appearance: none; */
+  /* background-color: #fff; */
+  margin: 0;
+  font: inherit;
+  /* color: currentColor; */
+  width: 1.3em;
+  height: 1.3em;
+  border: 0.15em solid var(--br-900);
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+}
+
 .todo-card.todo-inactive {
-    background-color: red;
+    background-color: var(--br-300);
+    color: grey;
+    text-decoration: line-through;
 }
 
 .details-dialog-label {
