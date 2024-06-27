@@ -17,45 +17,64 @@
     <dialog id="add-task-dialog">
         <div class='dialog-header'><button id="dialog-close">×</button></div>
         <form class="new-task-form">
-        <label for="task_title">Title: </label>
-        <input autofocus id="task_title" type="text" name="task_title" maxlength=20 placeholder='New Task'>
-        <label for="description">Description: </label>
-        <input id="description" type="text" name="description" maxlength=40 placeholder='Details about this task...'>
-        <label for="due_date">Due Date: </label>
-        <input id="due_date" type="date" name="due_date">
-        <label for="priority">Priority: </label>
-        <select id="priority" name="priority">
-            <option value="low" selected="selected">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-        </select>
-        <label for="project">Project: </label>
-        <select id="project-select-create" name="project">
-            <option value="Inbox" selected="selected">Inbox</option>
-        </select>
+        <div id="dialog-add-task-title">
+            <label for="task_title">Title: </label>
+            <input autofocus id="task_title" type="text" name="task_title" maxlength=20 placeholder='New Task'>
+        </div>
+        <div id="dialog-add-task-desc">
+            <label for="description">Description: </label>
+            <input id="description" type="text" name="description" maxlength=40 placeholder='Details about this task...'>
+        </div>
+        <div id="dialog-add-task-duedate">
+            <label for="due_date">Due Date: </label>
+            <input id="due_date" type="date" name="due_date">            
+        </div>
+        <div id="dialog-add-task-priority">
+            <label for="priority">Priority: </label>
+            <select id="priority" name="priority">
+                <option value="low" selected="selected">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>            
+        </div>
+        <div id="dialog-add-task-project">
+            <label for="project">Project: </label>
+            <select id="project-select-create" name="project">
+                <option value="Inbox" selected="selected">Inbox</option>
+            </select>            
+        </div>
         </form>     
         <button id='dialog-submit-new-task' >Create Task</button>
     </dialog>
     <dialog id="edit-task-dialog">
         <div class='dialog-header'><button id="edit-dialog-close">×</button></div>
-        <h1>Wow! we are editing the task!</h1>
         <form class="edit-task-form">
-            <label for="task_title_edit">Title: </label>
-            <input id="task_title_edit" type="text" name="task_title_edit" maxlength=20 placeholder='New Task'>
-            <label for="description_edit">Description: </label>
-            <input id="description_edit" type="text" name="description_edit" maxlength=40 placeholder='Details about this task...'>
-            <label for="due_date_edit">Due Date: </label>
-            <input id="due_date_edit" type="date" name="due_date_edit">
-            <label for="priority_edit">Priority: </label>
-            <select id="priority_edit" name="priority_edit">
-                <option value="low" selected="selected">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-            </select>
-            <label for="project_edit">Project: </label>
-            <select id="project-select-edit" name="project_edit">
-                <option value="Inbox" selected="selected">Inbox</option>
-            </select>
+            <div id="dialog-edit-task-title">
+                <label for="task_title_edit">Title: </label>
+                <input id="task_title_edit" type="text" name="task_title_edit" maxlength=20 placeholder='New Task'>    
+            </div>
+            <div id="dialog-edit-task-desc">
+                <label for="description_edit">Description: </label>
+                <input id="description_edit" type="text" name="description_edit" maxlength=40 placeholder='Details about this task...'>
+            </div>
+            <div id="dialog-edit-task-duedate">
+                <label for="due_date_edit">Due Date: </label>
+                <input id="due_date_edit" type="date" name="due_date_edit">
+            </div>
+            <div id="dialog-edit-task-priority">
+                <label for="priority_edit">Priority: </label>
+                <select id="priority_edit" name="priority_edit">
+                    <option value="low" selected="selected">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div id="dialog-edit-task-project">
+                <label for="project_edit">Project: </label>
+                <select id="project-select-edit" name="project_edit">
+                    <option value="Inbox" selected="selected">Inbox</option>
+                </select>
+            </div>
             </form>     
             <button id='dialog-submit-edit-task' >Edit Task</button>
     </dialog>

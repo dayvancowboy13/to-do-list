@@ -2,12 +2,18 @@ import Project from "./Project";
 import ProjectMaster from "./ProjectMaster"
 import { format } from "date-fns";
 import './style.css'
+import DelIcon from './images/del.svg'
+import EditIcon from './images/edit.svg'
+import DetailsIcon from './images/details.svg'
 
 export default class DOMController {
 
     //initialization block -- set up the button listeners
     static {
         console.log("DOMController started; initialization running.");
+
+        const svg1 = new Image();
+        svg1 = DelIcon;
     
         let buttonIDs = [
             {id:"add-task", func: this.#displayNewTaskDialog},

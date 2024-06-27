@@ -30,9 +30,137 @@ header {
     }
 }
 
-#add-task-dialog {
-    background-color: var(--br-100)
+dialog[open] {
+    background-color: var(--br-100);
+
+    box-sizing: border-box;
+    border: none;
+
+    & .dialog-header{
+        display: flex;
+        justify-content: end;
+    }
+
+    & label {
+        font-size: 1.4em;
+    }
+    input,select {
+        border-radius: 8px;
+        border: solid var(--br-500);
+        font-size: 1.008em;
+        box-sizing: border-box;
+        padding: 1px;
+        text-align: center;
+    }
+
+    input,select:focus {
+        outline: none;
+        border: solid var(--br-700);
+    }
+
+    & button {
+        font-weight: 600;
+        color: var(--br-200);
+        background-color: var(--br-800);
+        border-radius: 20px;
+        font-size: 1.2rem;
+        border: none;
+        cursor: pointer;
+        padding: 3.5%;
+        text-align: start;
+    }
+
+    & #dialog-close, #edit-dialog-close, #details-dialog-close {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 0;
+        font-size: 1.7em;
+    }
+
+    & #dialog-submit-new-task, #dialog-submit-edit-task {
+        grid-row: 3/4;
+        text-align: center;
+        width: 45%;
+        height: 60%;
+        padding: 0;
+        justify-self: center;
+        align-self: center;
+        font-size: 1.4rem;
+
+    }
+
+    & button:hover {
+        font-size: larger;
+        font-weight: bolder;
+    }
 }
+
+#add-task-dialog[open] {
+    display: grid;
+    grid-template-rows: 60px 1fr 100px;
+    width: 60%;
+    height: 80%;
+    
+    .new-task-form {
+        grid-row: 2/3;
+        display:grid;
+        grid-template-rows: repeat(5, 1fr);
+        justify-content: center;
+        padding: 50px auto;
+        align-items: center;
+    }
+
+    & #dialog-add-task-title{
+        grid-row: 1/2;
+    }
+
+    & #dialog-add-task-desc{
+        grid-row: 2/3;
+    }
+}
+
+#edit-task-dialog[open] {
+    display: grid;
+    grid-template-rows: 60px 1fr 100px;
+    width: 60%;
+    height: 80%;
+    
+    .edit-task-form {
+        grid-row: 2/3;
+        display:grid;
+        grid-template-rows: repeat(5, 1fr);
+        justify-content: center;
+        padding: 50px auto;
+        align-items: center;
+    }
+
+    & #dialog-edit-task-title{
+        grid-row: 1/2;
+    }
+
+    & #dialog-edit-task-desc{
+        grid-row: 2/3;
+    }
+}
+
+#details-dialog[open] {
+    display: grid;
+    grid-template-rows: 40px 1fr;
+    width: 25%;
+    height: 40%;
+    
+    #details-body {
+        display:grid;
+        grid-row: 2/3;
+        grid-template-rows: repeat(4, 1fr);
+        justify-content: center;
+        padding: 50px auto;
+        align-items: center;
+    }
+}
+
+
 
 #main-container {
     display: grid;
@@ -65,7 +193,7 @@ header {
 
     & h1 {
         justify-self: center;
-        color: var(--br-950);
+        color: var(--br-800);
         font-size: 24px;
     }
 
