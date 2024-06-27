@@ -11,9 +11,6 @@ export default class DOMController {
     //initialization block -- set up the button listeners
     static {
         console.log("DOMController started; initialization running.");
-
-        const svg1 = new Image();
-        svg1 = DelIcon;
     
         let buttonIDs = [
             {id:"add-task", func: this.#displayNewTaskDialog},
@@ -88,9 +85,19 @@ export default class DOMController {
             spanProjectCount.textContent = `(${activeTasks})`;
         }
 
-        const btnProjectDelete = document.createElement('button');
+        // const btnProjectDelete = document.createElement('button');
+        // this works:
+        const btnProjectDelete = new Image();
+        btnProjectDelete.src = DelIcon;
         btnProjectDelete.classList = "project-delete";
-        btnProjectDelete.textContent = "del";
+        // want this to work though:
+        // const btnProjectDelete = document.createElement('svg');
+
+        // btnProjectDelete.classList = "project-delete";
+        // btnProjectDelete.innerHTML = `<use xlink:href='${DelIcon}'></use>`
+        
+
+
         btnProjectDelete.onclick = () => {
             console.log("Removing project from listing");
             if (ProjectMaster.isProjectEmpty(projectName)){
@@ -191,24 +198,31 @@ export default class DOMController {
             spanDueDate.textContent = format(todo.dueDate, "MMM-dd-yyyy");
             spanPriority.textContent = `Priority: ${todo.priority.toUpperCase()}`;
 
-            const spanExpand = document.createElement('span');
+            const spanExpand = new Image();
+            spanExpand.src = DetailsIcon;
+            // const spanExpand = document.createElement('span');
             spanExpand.id = "card-details";
             spanExpand.classList = "task-card card-button"
-            spanExpand.textContent = "Details";
+            // spanExpand.textContent = "Details";
             spanExpand.onclick = () => this.#renderDetails(todo.title, todo.description, todo.dueDate, todo.priority);
 
-            const spanEdit = document.createElement("span");
+            const spanEdit = new Image();
+            spanEdit.src = EditIcon;
+            // const spanEdit = document.createElement("span");
             spanEdit.id = "card-edit";
             spanEdit.classList = "task-card card-button";
-            spanEdit.textContent = "edit";
+            // spanEdit.textContent = "edit";
             spanEdit.addEventListener("click", () =>{
                 console.log("Clicking the edit button")
                 DOMController.#Edit(todo);
             });
-            const spanDelete = document.createElement("span");
+
+            const spanDelete = new Image();
+            spanDelete.src = DelIcon;
+            // const spanDelete = document.createElement("span");
             spanDelete.id = "card-delete";
             spanDelete.classList = "task-card card-button";
-            spanDelete.textContent = "del";
+            // spanDelete.textContent = "del";
             spanDelete.addEventListener("click", () =>{
                 console.log("Clicking the del button")
                 let projectName = document.querySelector("#todo-display").className;

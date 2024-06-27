@@ -359,3 +359,11 @@ input[type="checkbox"] {
     outline: none;
     border: solid var(--br-700);
 }
+
+#card-details, #card-edit, #card-delete {
+    filter: brightness(0) saturate(100%) invert(93%) sepia(65%) saturate(7439%) hue-rotate(175deg) brightness(107%) contrast(101%);
+}
+
+.project-delete {
+    filter: brightness(0) saturate(100%) invert(22%) sepia(33%) saturate(5845%) hue-rotate(206deg) brightness(100%) contrast(94%);
+}
