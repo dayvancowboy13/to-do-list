@@ -7,7 +7,7 @@ import './style.css'
 
 
 
-DOMController.initialize();
+//DOMController.initialize();
 
 // // PuppetMaster.getTodaysTodos();
 // PuppetMaster.addToProject("Inbox", "t1", "desc", new Date(), "low")

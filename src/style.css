@@ -16,6 +16,11 @@
      font-family: Helvetica, Arial, sans-serif;
 }
 
+body {
+    margin:5% 10% 5% 10%;
+    background-color: var(--br-50);
+}
+
 header {
     display:grid;
     background-color: var(--br-500);
@@ -25,9 +30,28 @@ header {
     }
 }
 
+#add-task-dialog {
+    background-color: var(--br-100)
+}
+
 #main-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 4fr;
+    /* height: 80vh; */
+
+}
+
+.project-form-buttons {
+    display:flex;
+    justify-content: center;
+    margin-top: 10px;
+
+    & button#project-form-add,#project-form-cancel {
+        font-weight: 500;
+        color: var(--br-200);
+        background-color: var(--br-700);
+        border-radius: 8px;
+    }
 }
 
 
@@ -35,7 +59,7 @@ header {
     grid-column: 1/2;
     display: grid;
     background-color: var(--br-200);
-    max-width: 15vw;
+    /* max-width: 15vw; */
     border-right: solid var(--br-400) 1px;
     padding: 6px;
 
@@ -56,57 +80,61 @@ header {
         border-radius: 8px;
         color: var(--br-800);
 
-        padding: 4%;
+        padding: 3.5%;
         text-align: start;
-
-
     }
 
-    & button:hover {
+    & button:hover, .project-name:hover {
         font-size: 1.3rem;
         font-weight: bolder;
-
     }
+}
+
+#add-project-form {
+    justify-self: center;
 }
 
 
 #existing-projects{
-    /* background-color: var(--br-600); */
-    list-style: none;
-    
-    & li {
-        margin: 5px;
-    }
+    display: grid;
+    grid-template-rows: 50px;
+    grid-auto-rows: 50px;
+    padding-left: 0;
 }
 
 #todo-display {
     grid-column: 2/3;
     display:grid;
+    grid-template-rows: 60px;
+    grid-auto-rows: 60px;
     background-color: var(--br-100);
     /* border: solid black 2px; */
-    width: 80vw;
+    /* width: 80vw; */
     min-height: 10em;
     padding: 20px;
+    justify-items: center;
 }
 
 .project-name, .project-delete, .card-button {
     cursor: pointer;
 }
 
+
 #inbox {
     display: flex;
     justify-content: space-between;
 }
 
-#existing-projects {
-    padding-left: 0;
-}
-
 ul#existing-projects > li {
+    padding: 0;
     display: flex;
+    box-sizing: border-box;
     justify-content: space-between;
     align-items: center;
     text-align: start;
+    margin: 0 auto 0 auto;
+    width: 85%;
+    height: 50%;
 }
 
 /* ul#existing-projects > li:hover::before {
@@ -117,51 +145,70 @@ ul#existing-projects > li:c {
     content: ">>"
 } */
 
-.project-count {
-
+.project-count,.add-symbol {
     font-weight: 600;
     color: var(--br-200);
     background-color: var(--br-800);
     border-radius: 20px;
-    padding: 0 10px 0 10px;
+}
+
+.project-count {
+    padding: 0 7px 0 7px;    
+}
+
+.add-symbol {
+    display: inline-block;
+    padding: 0 6px 1px 6px;
+    transform: translateY(-2px);
 }
 
 .todo-card {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--br-600);
     color: var(--br-100);
     border-radius: 8px;
-    max-width: 70%;
+    width: 85%;
+    min-width: 500px;
     height: 50px;
     gap: 8px;
+    padding: 1em;
 
-    & #edit-btn {
+    /* & #edit-btn {
         justify-self: end;
         color: white;
     }
     & #del-btn {
         justify-self: end;
         color: red;
-    }
+    } */
+}
+
+#card-title {
+    margin-right: 3em;
+}
+
+#card-date {
+    margin-right: 2em;
+}
+
+#card-priority {
+    margin-right: 2em;
 }
 
 input[type="checkbox"] {
-    /* appearance: none; */
-  /* background-color: #fff; */
-  margin: 0;
-  font: inherit;
-  /* color: currentColor; */
-  width: 1.3em;
-  height: 1.3em;
+  margin-right: auto;
+  width: 1.7em;
+  height: 1.7em;
   border: 0.15em solid var(--br-900);
   border-radius: 0.15em;
-  transform: translateY(-0.075em);
+  /* transform: translateY(-0.075em); */
 }
 
 .todo-card.todo-inactive {
-    background-color: var(--br-300);
+    background-color: hsl(208, 100%, 81%);
     color: grey;
     text-decoration: line-through;
 }
@@ -170,4 +217,17 @@ input[type="checkbox"] {
     padding-right: 6px;
     font-weight:800;
 }
-    
+
+#project_name {
+    border-radius: 8px;
+    border: solid var(--br-500);
+    font-size: 1.008em;
+    box-sizing: border-box;
+    padding: 1px;
+    text-align: center;
+}
+ 
+#project_name:focus {
+    outline: none;
+    border: solid var(--br-700);
+}

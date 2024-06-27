@@ -18,7 +18,7 @@
         <div class='dialog-header'><button id="dialog-close">×</button></div>
         <form class="new-task-form">
         <label for="task_title">Title: </label>
-        <input autofocus id="task_title" type="text" name="task_title" maxlength=40 placeholder='New Task'>
+        <input autofocus id="task_title" type="text" name="task_title" maxlength=20 placeholder='New Task'>
         <label for="description">Description: </label>
         <input id="description" type="text" name="description" maxlength=40 placeholder='Details about this task...'>
         <label for="due_date">Due Date: </label>
@@ -41,7 +41,7 @@
         <h1>Wow! we are editing the task!</h1>
         <form class="edit-task-form">
             <label for="task_title_edit">Title: </label>
-            <input id="task_title_edit" type="text" name="task_title_edit" maxlength=40 placeholder='New Task'>
+            <input id="task_title_edit" type="text" name="task_title_edit" maxlength=20 placeholder='New Task'>
             <label for="description_edit">Description: </label>
             <input id="description_edit" type="text" name="description_edit" maxlength=40 placeholder='Details about this task...'>
             <label for="due_date_edit">Due Date: </label>
@@ -70,16 +70,18 @@
     </dialog>
     <div id="main-container">
         <div id="side-bar">
-            <button id="add-task" class="list-item">+ Add Task</button>
+            <button id="add-task" class="list-item"><span class="add-symbol">+</span> Add Task</button>
             <button id="inbox" class="list-item"><span class="project-name">Inbox</span><span class="project-count"></span></button>
             <button id="todo-today" class="list-item">Today</button>
             <button id="todo-week" class="list-item">This Week</button>
             <h1>Projects</h1>
-            <button id="add-project-btn">Add Project</button>
+            <button id="add-project-btn"><span class="add-symbol">+</span> Add Project</button>
             <div id="add-project-form" style="display: none">
                 <input autofocus id="project_name" placeholder="Project Name" type="text" maxlength="12" minlength="1">
-                <button id="project-form-add" class="project-form-btn">Add</button>
-            <button id="project-form-cancel" class="project-form-btn">Cancel</button>
+                <div class="project-form-buttons">
+                    <button id="project-form-add" class="project-form-btn">Add</button>
+                    <button id="project-form-cancel" class="project-form-btn">Cancel</button>
+                </div>
             </div>
             <ul id="existing-projects">
             </ul>

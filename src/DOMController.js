@@ -5,18 +5,10 @@ import './style.css'
 
 export default class DOMController {
 
-    static initialize(){
-        console.log("Starting point -- Setting things up!")
-
-        this.#initListeners();
-
-        // still lots to do!
-
-        // functionality for populating a list of projects when user selects "inbox"
-        // or "today" or "this week" buttons
-    }
-
-    static #initListeners(){
+    //initialization block -- set up the button listeners
+    static {
+        console.log("DOMController started; initialization running.");
+    
         let buttonIDs = [
             {id:"add-task", func: this.#displayNewTaskDialog},
             {id:"inbox", func: this.#Inbox},
@@ -191,7 +183,7 @@ export default class DOMController {
 
             spanTitle.textContent = todo.title;
             spanDueDate.textContent = format(todo.dueDate, "MMM-dd-yyyy");
-            spanPriority.textContent = `Priority: ${todo.priority}`;
+            spanPriority.textContent = `Priority: ${todo.priority.toUpperCase()}`;
 
             const spanExpand = document.createElement('span');
             spanExpand.id = "card-details";
@@ -227,7 +219,7 @@ export default class DOMController {
             spanSource.id = "card-source";
             spanSource.classList = "task-card";
             spanSource.textContent = `From: ${todo.srcProject}`;
-            spanPriority.textContent = `Priority: ${todo.todo.priority}`;
+            spanPriority.textContent = `Priority: ${todo.todo.priority.toUpperCase()}`;
 
             cardBase.append(spanTitle, spanPriority, spanSource);
         } else if (mode === "week"){
@@ -239,7 +231,7 @@ export default class DOMController {
             spanSource.classList = "task-card";
             spanSource.textContent = `From: ${todo.srcProject}`;
 
-            spanPriority.textContent = `Priority: ${todo.todo.priority}`;
+            spanPriority.textContent = `Priority: ${todo.todo.priority.toUpperCase}`;
 
             cardBase.append(spanTitle, spanDueDate, spanPriority, spanSource);
         }
@@ -315,6 +307,8 @@ export default class DOMController {
             DOMController.#updateProjectsListing(inputProjectName);
         }
         DOMController.#resetProjectSelect("#project-select-create");
+        const currentProject = document.querySelector("#todo-display").className;
+        //DOMController.#displayProjectTasks(currentProject, null);
     }
 
     static #renderDetails (title, desc, dueDate, priority){
