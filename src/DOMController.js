@@ -11,6 +11,15 @@ export default class DOMController {
     //initialization block -- set up the button listeners
     static {
         console.log("DOMController started; initialization running.");
+
+        this.#updateProjectsListing("Inbox");
+
+        if (ProjectMaster.projectArray.length !== 0){
+            for (let project of ProjectMaster.projectArray){
+                this.#addToProjectList(project.projectName);
+                this.#updateProjectsListing(project.projectName);
+            }
+        }
     
         let buttonIDs = [
             {id:"add-task", func: this.#displayNewTaskDialog},

@@ -14,9 +14,45 @@ export default class ProjectMaster {
             localStorage.setItem("Inbox", "");
         } else {
             // parse Inbox
-            let inboxStorage = JSON.parse(localStorage["Inbox"]);
-            if (inboxStorage.length !== 0){
-                // go through inboxStorage and add the items to the current array
+            if(localStorage["Inbox"] !== ""){
+                let inboxStorage = JSON.parse(localStorage["Inbox"]);
+                if (inboxStorage.length !== 0){
+                    for (let todo of inboxStorage){
+                        // console.log(todo);
+                        this.addToProject("Inbox", todo.title, todo.description, todo.dueDate, todo.priority);
+                    }
+
+                }   
+            }
+            
+            if (localStorage.length > 1){
+                console.log("adding projects from storage")
+                let projectKeys = Object.keys(localStorage);
+                console.log(projectKeys);
+                console.log(localStorage);
+                
+                // remove the first key (inbox)
+                const inboxIndex = projectKeys.indexOf("Inbox");
+                projectKeys.splice(inboxIndex, 1);
+                console.log(projectKeys);
+                for (let key of projectKeys) {
+                    console.log(key)
+                    this.createProject(key);
+                    console.log(localStorage[key]);
+                    try {
+                        let projStorage = JSON.parse(localStorage[key]); 
+                        console.log(projStorage);                       
+                        if (projStorage.length !== 0){
+                            for (let todo of projStorage){
+                                console.log(todo);
+                                this.addToProject(key, todo.title, todo.description, todo.dueDate, todo.priority);
+                            }
+            
+                        }
+                    } catch (error) {
+                        console.log("The project was empty");
+                    }
+                }
             }
         }
     }
@@ -29,13 +65,17 @@ export default class ProjectMaster {
     get inbox() {
         return this.inbox;
     }
+    
+    get numberOfProjects(){
+        return this.projectArray.length;
+    }
 
     static isProjectEmpty(projectName){
         if(this.getProjectFromArray(projectName).length === 0){
             return true;
         } else return false;
     }
-
+    
     static checkProjectNameIsValid(projectName){
         console.log(
             "Checking if project name already in use"
@@ -111,14 +151,14 @@ export default class ProjectMaster {
         console.log("Number of items in inbox " + this.inbox.length)
     }
 
-    static numberOfProjects(){
-        return this.projectArray.length;
-    }
-
     static createProject(name){
         let project = new Project(name);
         this.projectArray.push(project);
-        localStorage.setItem(name, "");
+        console.log(Object.keys(localStorage))
+        if (!Object.keys(localStorage).includes(name)) {
+            console.log("setting the key to empty")
+            localStorage.setItem(name, "");
+        }
     }
 
     static changeTodoProject(todoTitle, oldProjectName, newProjectName){
