@@ -1,41 +1,30 @@
-// import Todo from "./Todo.js"
-// import Project from "./Project.js"
 import DOMController from "./DOMController.js"
 import './style.css'
-// import * as dateFns from "date-fns";
-// import ProjectMaster from "./ProjectMaster.js"
 
+// function storageAvailable(type) {
+//     let storage;
+//     try {
+//       storage = window[type];
+//       const x = "__storage_test__";
+//       storage.setItem(x, x);
+//       storage.removeItem(x);
+//       return true;
+//     } catch (e) {
+//       return (
+//         e instanceof DOMException &&
+//         e.name === "QuotaExceededError" &&
+//         // acknowledge QuotaExceededError only if there's something already stored
+//         storage &&
+//         storage.length !== 0
+//       );
+//     }
+// }
+
+// if (storageAvailable("localStorage")) {
+//     console.log("Local storage available!");
+//   } else {
+//     console.log("No local storage :(");
+//   }
 
 
 //DOMController.initialize();
-
-// // PuppetMaster.getTodaysTodos();
-// PuppetMaster.addToProject("Inbox", "t1", "desc", new Date(), "low")
-// PuppetMaster.addToProject("Inbox", "t2", "desc", new Date(2024,5,22), "high")
-// PuppetMaster.addToProject("Inbox", "t3", "desc", new Date(2024,5,30), "low")
-// PuppetMaster.addToProject("Inbox", "t4", "desc", new Date(), "low")
-// PuppetMaster.addToProject("Inbox", "t5", "desc", new Date(2024,5,27), "low")
-// PuppetMaster.addToProject("Inbox", "t6", "desc", new Date(2024,5,23), "low")
-// console.log(PuppetMaster.getProjectTodos("Inbox"))
-// // let edit = {
-// //     newTitle: "Christmas!",
-// //     desc: "Tremendous",
-// //     dueDate: new Date(2024, 11, 25),
-// //     priority: "high"
-// // }
-
-
-
-// PuppetMaster.createProject("p1");
-// PuppetMaster.addToProject("p1", "t1", "desc", new Date(), "low")
-// PuppetMaster.addToProject("p1", "t2", "desc", new Date(), "high")
-// PuppetMaster.addToProject("p1", "t3", "desc", new Date(2024,5,30), "low")
-// PuppetMaster.addToProject("p1", "t4", "desc", new Date(2024,8,2), "low")
-// PuppetMaster.addToProject("p1", "t5", "desc", new Date(), "low")
-// PuppetMaster.addToProject("p1", "t6", "desc", new Date(2024,8,2), "low")
-
-// PuppetMaster.createProject("p2");
-// PuppetMaster.addToProject("p2", "t1", "desc", new Date(), "low")
-// PuppetMaster.addToProject("p2", "t2", "desc", new Date(), "high")
-// PuppetMaster.addToProject("p2", "t3", "desc", new Date(2024,5,30), "low")
-// PuppetMaster.addToProject("p2", "t4", "desc", new Date(2024,8,2), "low")

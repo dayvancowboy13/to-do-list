@@ -5,6 +5,21 @@ import * as dateFns from "date-fns";
 export default class ProjectMaster {
     static projectArray = new Array();
     static inbox = new Project("Inbox");
+
+    static {
+        console.log("ProjectMaster class up and running");
+
+        console.log("Creating initial localStorage object");
+        if (localStorage.length === 0) {
+            localStorage.setItem("Inbox", "");
+        } else {
+            // parse Inbox
+            let inboxStorage = JSON.parse(localStorage["Inbox"]);
+            if (inboxStorage.length !== 0){
+                // go through inboxStorage and add the items to the current array
+            }
+        }
+    }
     
 
     get projectArray(){
@@ -43,12 +58,18 @@ export default class ProjectMaster {
     static removeFromProject(todoTitle, projectName){
         console.log(`Attempting to remove todo "${todoTitle}"`)
         if(projectName === "Inbox"){
-            if(this.inbox.removeTodo(todoTitle)) return true;
+            if(this.inbox.removeTodo(todoTitle)) {
+                localStorage.setItem(projectName, JSON.stringify(this.inbox.allTodos));
+                return true;
+            }
             else return false;
         } else {
             for (let project of this.projectArray){
                 if(project.projectName === projectName){
-                    if(project.removeTodo(todoTitle)) return true;
+                    if(project.removeTodo(todoTitle)) {
+                        localStorage.setItem(projectName, JSON.stringify(this.getProjectTodos(projectName)));
+                        return true;
+                    }
                     else return false;
                 }
             }
@@ -61,6 +82,9 @@ export default class ProjectMaster {
             if(!this.inbox.addTodo(this.createTodo(title, description, dueDate, priority))){
                 this.todoNotAdded();
                 return false;
+            } else {
+                localStorage.setItem(projectName, JSON.stringify(this.inbox.allTodos));
+                return true;
             }
         } else {
             for (let project of this.projectArray){
@@ -68,6 +92,9 @@ export default class ProjectMaster {
                     if(!project.addTodo(this.createTodo(title, description, dueDate, priority))){
                         this.todoNotAdded();
                         return false;
+                    }
+                    else {
+                        localStorage.setItem(projectName, JSON.stringify(this.getProjectTodos(projectName)));
                     }
                     console.log('successfully added todo')
                     return true;
@@ -91,6 +118,7 @@ export default class ProjectMaster {
     static createProject(name){
         let project = new Project(name);
         this.projectArray.push(project);
+        localStorage.setItem(name, "");
     }
 
     static changeTodoProject(todoTitle, oldProjectName, newProjectName){
@@ -243,6 +271,7 @@ export default class ProjectMaster {
         for (let project of this.projectArray){
             if(project.name === projectName){
                 this.projectArray.splice(i, 1);
+                localStorage.removeItem(projectName);
                 return true;
             } else i++;
         }

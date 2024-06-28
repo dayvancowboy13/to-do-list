@@ -303,15 +303,6 @@ ul#existing-projects > li:c {
     height: 50px;
     gap: 8px;
     padding: 1em;
-
-    /* & #edit-btn {
-        justify-self: end;
-        color: white;
-    }
-    & #del-btn {
-        justify-self: end;
-        color: red;
-    } */
 }
 
 #card-title {
@@ -332,7 +323,6 @@ input[type="checkbox"] {
   height: 1.7em;
   border: 0.15em solid var(--br-900);
   border-radius: 0.15em;
-  /* transform: translateY(-0.075em); */
 }
 
 .todo-card.todo-inactive {
