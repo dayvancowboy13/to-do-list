@@ -1,6 +1,6 @@
 import Todo from "./Todo.js"
 import Project from "./Project.js"
-import * as dateFns from "date-fns";
+import { format, isThisWeek} from "date-fns";
 
 export default class ProjectMaster {
     static projectArray = new Array();
@@ -28,23 +28,16 @@ export default class ProjectMaster {
             if (localStorage.length > 1){
                 console.log("adding projects from storage")
                 let projectKeys = Object.keys(localStorage);
-                console.log(projectKeys);
-                console.log(localStorage);
                 
                 // remove the first key (inbox)
                 const inboxIndex = projectKeys.indexOf("Inbox");
                 projectKeys.splice(inboxIndex, 1);
-                console.log(projectKeys);
                 for (let key of projectKeys) {
-                    console.log(key)
                     this.createProject(key);
-                    console.log(localStorage[key]);
                     try {
-                        let projStorage = JSON.parse(localStorage[key]); 
-                        console.log(projStorage);                       
+                        let projStorage = JSON.parse(localStorage[key]);                       
                         if (projStorage.length !== 0){
                             for (let todo of projStorage){
-                                console.log(todo);
                                 this.addToProject(key, todo.title, todo.description, todo.dueDate, todo.priority);
                             }
             
@@ -81,8 +74,6 @@ export default class ProjectMaster {
             "Checking if project name already in use"
         );
         for (let project of this.projectArray){
-            console.log(projectName)
-            console.log(`Currently checking against ${project.projectName}`);
             if (project.projectName === projectName){
                 return false;
             }
@@ -147,16 +138,10 @@ export default class ProjectMaster {
         alert("The project already has a todo with that title. Another could not be added")
     }
 
-    static inboxTodos(){
-        console.log("Number of items in inbox " + this.inbox.length)
-    }
-
     static createProject(name){
         let project = new Project(name);
         this.projectArray.push(project);
-        console.log(Object.keys(localStorage))
         if (!Object.keys(localStorage).includes(name)) {
-            console.log("setting the key to empty")
             localStorage.setItem(name, "");
         }
     }
@@ -172,9 +157,6 @@ export default class ProjectMaster {
         }
         let tempTodo = oldProject.findTodo(todoTitle);
 
-        // console.log
-
-        // if the todo retrieved from old project is valid:
         if(tempTodo !== undefined) {
 
             if(this.addToProject(newProjectName, tempTodo.title, tempTodo.description,
@@ -197,12 +179,10 @@ export default class ProjectMaster {
     }
 
     static getTodoDetails(projectName, todoTitle){
-        // DOM class will use this to display more details of a todo
         console.log(`Getting details for ${todoTitle} from ${projectName}`)
         if(projectName === "Inbox"){
             return this.inbox.findTodo(todoTitle);
         } else {
-            // find projectName in projectArray
             let targetProject;
             for (let project of this.projectArray){
                 if (project.projectName === projectName){
@@ -211,7 +191,7 @@ export default class ProjectMaster {
                 }
             }
             if (targetProject === undefined){
-                console.log("something went wrong in getProjectTodos");
+                console.log("something went wrong in getTodoDetails");
                 return undefined;
             }
         }
@@ -238,22 +218,19 @@ export default class ProjectMaster {
     }
 
     static getTodaysTodos(){
-        const today = dateFns.format(new Date(), "MM-dd-yyyy");
+        const today = format(new Date(), "MM-dd-yyyy");
         let todayArray = new Array();
         let i = 0;
 
         for (let todo of this.inbox.todoArray){
-            if (dateFns.format(todo.dueDate, "MM-dd-yyyy") === today){
+            if (format(todo.dueDate, "MM-dd-yyyy") === today){
                 todayArray.push({todo, srcProject: "Inbox"});
-                // todayArray.push(todo);
             }
         }
         for (let project of this.projectArray){
             for (let todo of project.todoArray){
-                console.log(dateFns.format(todo.dueDate, "MM-dd-yyyy"))
-                if (dateFns.format(todo.dueDate, "MM-dd-yyyy") === today){
+                if (format(todo.dueDate, "MM-dd-yyyy") === today){
                     todayArray.push({todo, srcProject: project.name});
-                    // todayArray.push(todo);
                 }
             }
         }
@@ -265,13 +242,13 @@ export default class ProjectMaster {
         let thisWeekArray = new Array();
 
         for (let todo of this.inbox.todoArray){
-            if (dateFns.isThisWeek(todo.dueDate)){
+            if (isThisWeek(todo.dueDate)){
                 thisWeekArray.push({todo, srcProject: "Inbox"});
             }
         }
         for (let project of this.projectArray){
             for (let todo of project.todoArray){
-                if (dateFns.isThisWeek(todo.dueDate)){
+                if (isThisWeek(todo.dueDate)){
                     thisWeekArray.push({todo, srcProject: project.name});
                 }
             }

@@ -58,8 +58,6 @@ export default class DOMController {
                 document.querySelector("#add-project-form").style.display = "none";
                 document.querySelector('#add-project-btn').style.display = 'block';
                 document.querySelector('#project_name').value = '';
-                // refresh project list on page
-                // THIS MIGHT HAVE BUGS LATER!
                 DOMController.#addToProjectList(projectName);
             }
         });
@@ -94,18 +92,9 @@ export default class DOMController {
             spanProjectCount.textContent = `(${activeTasks})`;
         }
 
-        // const btnProjectDelete = document.createElement('button');
-        // this works:
         const btnProjectDelete = new Image();
         btnProjectDelete.src = DelIcon;
         btnProjectDelete.classList = "project-delete";
-        // want this to work though:
-        // const btnProjectDelete = document.createElement('svg');
-
-        // btnProjectDelete.classList = "project-delete";
-        // btnProjectDelete.innerHTML = `<use xlink:href='${DelIcon}'></use>`
-        
-
 
         btnProjectDelete.onclick = () => {
             console.log("Removing project from listing");
@@ -160,7 +149,6 @@ export default class DOMController {
     }
 
     static #createTaskCard(todo, mode="regular"){
-        // generate the HTML to display the information of the Todo on the page
         console.log(`creating new task card in ${mode} mode`);
         const cardBase = document.createElement('div');
         cardBase.classList = "todo-card";
@@ -201,7 +189,6 @@ export default class DOMController {
                 }
                 DOMController.#updateProjectsListing(document.querySelector("#todo-display").className);
             }
-            //checkButton.addEventListener("click", () => { });
 
             spanTitle.textContent = todo.title;
             spanDueDate.textContent = format(todo.dueDate, "MMM-dd-yyyy");
@@ -209,18 +196,14 @@ export default class DOMController {
 
             const spanExpand = new Image();
             spanExpand.src = DetailsIcon;
-            // const spanExpand = document.createElement('span');
             spanExpand.id = "card-details";
             spanExpand.classList = "task-card card-button"
-            // spanExpand.textContent = "Details";
             spanExpand.onclick = () => this.#renderDetails(todo.title, todo.description, todo.dueDate, todo.priority);
 
             const spanEdit = new Image();
             spanEdit.src = EditIcon;
-            // const spanEdit = document.createElement("span");
             spanEdit.id = "card-edit";
             spanEdit.classList = "task-card card-button";
-            // spanEdit.textContent = "edit";
             spanEdit.addEventListener("click", () =>{
                 console.log("Clicking the edit button")
                 DOMController.#Edit(todo);
@@ -228,10 +211,8 @@ export default class DOMController {
 
             const spanDelete = new Image();
             spanDelete.src = DelIcon;
-            // const spanDelete = document.createElement("span");
             spanDelete.id = "card-delete";
             spanDelete.classList = "task-card card-button";
-            // spanDelete.textContent = "del";
             spanDelete.addEventListener("click", () =>{
                 console.log("Clicking the del button")
                 let projectName = document.querySelector("#todo-display").className;
@@ -270,7 +251,6 @@ export default class DOMController {
 
     static #updateProjectsListing(projectName){
         console.log('Updating project listing')
-        // will be called when user adds a task or marks a task as complete/incomplete
         if (projectName === "Inbox"){
             const inboxButton = document.querySelector("#inbox");
             const activeTasks = ProjectMaster.inbox.activeTaskCount;
@@ -337,13 +317,11 @@ export default class DOMController {
         }
         DOMController.#resetProjectSelect("#project-select-create");
         const currentProject = document.querySelector("#todo-display").className;
-        //DOMController.#displayProjectTasks(currentProject, null);
     }
 
     static #renderDetails (title, desc, dueDate, priority){
         console.log("rendering the details")
         const detailsDialog = document.querySelector("#details-dialog");
-        // const detailsBody = document.querySelector("#details-body");
         const detailsCloseBtn = document.querySelector("#details-dialog-close");
         detailsCloseBtn.onclick = () => {detailsDialog.close()};
         
@@ -423,7 +401,6 @@ export default class DOMController {
                 DOMController.#resetProjectSelect("#project-select-edit");
                 DOMController.#updateProjectsListing(inputProjectName);
                 DOMController.#displayProjectTasks(currentProject, null);
-                // submitButton.removeEventListener("click", hitEditSubmit);
             }
         };
 
